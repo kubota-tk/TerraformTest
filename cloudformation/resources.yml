@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: EC2,RDS,ALB and S3 for RaiseTech-Lecture13
+Description: EC2,RDS,ALB and S3 for TerraformTest 
 
 ## Metadataの作成 ##
 
@@ -34,12 +34,12 @@ Parameters:
   ProjectName:
     Type: String
     Description: project name
-    Default: RaiseTech-Lec13
+    Default: TerraformTest
 ##---EC2---##
   KeyName:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: AWS::EC2::KeyPair::KeyName
-    Default: lec13-keypair
+    Default: TerraformTest-keypair
 ##---RDS---##
   DBEngineName:
     Description: Input DB Engine Name
@@ -65,7 +65,7 @@ Parameters:
   DBName:
     Description: DB Name
     Type: String
-    Default: RaiseTechLec13db
+    Default: TerraformTestdb
   DBMasterUserName:
     Description: RDS Maseter User Name
     Type: String
@@ -107,7 +107,6 @@ Resources:
       UserData: !Base64 |
         #!/bin/bash
         yum install git -y
-        yum install mysql -y
 
 ## ElasticIPの作成##
  ElasticIP:
@@ -242,7 +241,7 @@ Resources:
  S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: raisetech-lec13-s3-bucket
+      BucketName: TerraformTest-s3-bucket
       PublicAccessBlockConfiguration:
           BlockPublicAcls: true
           BlockPublicPolicy: true

@@ -18,9 +18,9 @@ jobs:
           name: Deploy to was from template
           command: |
             set -x
-            aws cloudformation deploy --template cloudformation/vpc.yml --stack-name CircleCI-lec13-vpc
-            aws cloudformation deploy --template cloudformation/security.yml --stack-name CircleCI-lec13-security
-            aws cloudformation deploy --template cloudformation/resources.yml --stack-name CircleCI-lec13-resources --capabilities CAPABILITY_NAMED_IAM
+            aws cloudformation deploy --template cloudformation/vpc.yml --stack-name TerraformTest-vpc
+            aws cloudformation deploy --template cloudformation/security.yml --stack-name TerraformTest-security
+            aws cloudformation deploy --template cloudformation/resources.yml --stack-name TerraformTest-resources --capabilities CAPABILITY_NAMED_IAM
   execute-ansible:
     executor: ansible-playbook/default
     steps:
@@ -48,7 +48,7 @@ jobs:
             TARGET_HOST=54.64.64.240 bundle exec rspec
 
 workflows:
-  circleci-raisetech13-workflow:
+  TerraformTest-workflow:
     jobs:
       - execute-cloudformation
       - execute-ansible:

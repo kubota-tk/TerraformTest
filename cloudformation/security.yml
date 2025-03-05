@@ -6,7 +6,7 @@ Parameters:
   ProjectName:
     Type: String
     Description: Project Name
-    Default: RaiseTech-Lec13
+    Default: TerraformTest
 
 Resources:
 

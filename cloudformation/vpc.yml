@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: VPC and subnets for RaiseTech-Lecture13
+Description: VPC and subnets for TerraformTest
 
 
 ## Metadataの作成 ##
@@ -27,7 +27,7 @@ Parameters:
   ProjectName:
     Type: String
     Description: Project Name
-    Default: RaiseTech-Lec13
+    Default: TerraformTest
   VPCCIDR:
     Type: String
     Default: 10.1.0.0/16
@@ -46,7 +46,6 @@ Parameters:
 
 
 Resources:
-
 ## VPCの作成 ##
  
   VPC:
