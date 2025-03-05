@@ -241,7 +241,7 @@ Resources:
  S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: TerraformTest-s3-bucket
+      BucketName: terraformtest-s3-bucket
       PublicAccessBlockConfiguration:
           BlockPublicAcls: true
           BlockPublicPolicy: true
