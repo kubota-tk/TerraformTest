@@ -42,7 +42,6 @@
   become: yes
   vars_files:
     - ../vars/set_mysql.yml
-  command: echo '{{ mysql_default_password.stdout }}' 
   command: echo '{{ mysql_password }}' 
 #- name: change root user password
 #  become: yes
