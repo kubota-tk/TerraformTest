@@ -34,13 +34,16 @@
   ignore_errors: true
 
 - name: get temporary password
+  become: yes
   shell: sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
   register: mysql_default_password
 
-# - name: change root user password
-#  shell: |
-#    mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ vault_mysql_password }}');"
-#
+ - name: change root user password
+   vars_files:
+     - ../vars/set_mysql.yml
+   shell: |
+     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
+
 #- name: delete /root/.my.cnf
 #  file: name=/root/.my.cnf  state=absent
 #

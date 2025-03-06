@@ -1,1 +1,2 @@
 serverspec/vendor
+ansible/mysql/var/**
