@@ -1,22 +1,33 @@
 ---
 # tasks file for ruby
 - name: Check if ruby is installed
-  command:
-    cmd: ruby --version
+  command: ruby --version
   register: ruby_check
   ignore_errors: true
   changed_when: false
 
 - name: 'Install rbenv'
-  git: repo: https://github.com/sstephenson/rbenv.git dest: ~/.rbenv
-  shell: 'echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile |  echo 'eval "$(rbenv init -)"' >> ~/.bash_profile | source ~/.bash_profile'
-  when: ruby_check.failed
+  git: repo=https://github.com/sstephenson/rbenv.git dest=~/.rbenv
+#  shell: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+#  shall: echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+# shall: source ~/.bash_profile'
+  failed_when: ruby_check.failed
 
 - name: 'Install ruby-build'
-  git: repo: https://github.com/sstephenson/ruby-build.git dest: ~/.rbenv/plugins/ruby-build
-  shell: sudo ./install.sh
-  when: ruby_check.failed
+  git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
+#  shell: i./install.sh
+  failed_when: ruby_check.failed
+
+- name: profile_init.sh内のREPLACE_EXECRBENVをrbenv initに置換する
+  replace:  dest=/etc/profile.d/profile_init.sh regexp="^#REPLACE_EXECRBENV" replace='eval "$(rbenv init -)" >/dev/null 2>&1'
+  when: ruby_install.rc == 1
+
+- name: bashの実行
+  shell: /etc/profile.d/profile_init.sh
+  failed_when: ruby_check.failed
+
 
 - name: 'rubyインストール'
-  shell: 'rbenv install 3.2.3 -v | shell: rbenv global 3.2.3'
-  when: ruby_check.failed
+  command: rbenv install 3.2.3 -v
+  command: rbenv global 3.2.3
+  failed_when: rubyq_check.failed
