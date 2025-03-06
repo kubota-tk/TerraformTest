@@ -40,7 +40,7 @@
 
 - name: change root user password
   become: yes
-  command: echo "{{ mysqlpassword }}"
+  command: echo "{{ mysql_password }}"
 #  shell: |
-#     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysqlpassword }}');"
+#     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
 
