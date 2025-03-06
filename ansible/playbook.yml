@@ -6,5 +6,6 @@
     - yum
     - git
     - mysql
+    - ruby
     - nginx
 
