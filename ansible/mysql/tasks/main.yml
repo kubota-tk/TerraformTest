@@ -35,8 +35,7 @@
 
 - name:get temporary password
   become:yes
-  shell: |
-    sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
+  shell: cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
   register: mysql_default_password
 
 #- name: change root user password
