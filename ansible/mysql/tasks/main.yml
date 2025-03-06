@@ -33,9 +33,8 @@
     state: started
   ignore_errors: true
 
-#- name:get temporary password
-#  become:yes
-#  shell: sudo cat /var/log/mysqld.log | grep "temporary password" | grep -oE '[^ ]+$'
+- name:get temporary password
+  shell: cat /var/log/mysqld.log | grep "temporary password" | grep -oE '[^ ]+$'
 #  register: mysql_default_password
 #
 #- name: change root user password
