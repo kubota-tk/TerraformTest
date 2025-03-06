@@ -21,7 +21,6 @@
   become: yes
   yum:
     name:
-      - python3-pymysql
       - mysql-community-devel
       - mysql-community-server
       - mysql-community-client
@@ -34,17 +33,14 @@
     state: started
   ignore_errors: true
 
-- name: get temporary password
-  shell: sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
-  register: mysql_default_password
-
-- name: change root user password
-  mysql_user:
-    login_user: root
-    login_password: "{{ mysql_default_password.stdout }}"
-    name: "{{ admin_user_name }}"
-    password: "{{ admin_user_password }}"
-    check_implicit_admin: yes
-    state: present
-#  shell: |
-#     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
+##
+##varsに変数設定したが、パスワードがshellに載ることになり、エラー
+##
+## - name: get temporary password
+##  shell: sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
+##  register: mysql_default_password
+##
+## - name: change root user password
+##  become: yes
+##  shell: |
+##     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
