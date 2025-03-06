@@ -11,23 +11,25 @@
 #  shell: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
 #  shall: echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 # shall: source ~/.bash_profile'
-  failed_when: ruby_check.failed
+  when: ruby_check.failed
 
 - name: 'Install ruby-build'
   git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
 #  shell: i./install.sh
-  failed_when: ruby_check.failed
+  when: ruby_check.failed
 
 - name: profile_init.sh内のREPLACE_EXECRBENVをrbenv initに置換する
   replace:  dest=/etc/profile.d/profile_init.sh regexp="^#REPLACE_EXECRBENV" replace='eval "$(rbenv init -)" >/dev/null 2>&1'
-  when: ruby_install.rc == 1
+  when: ruby_check.failed
 
 - name: bashの実行
   shell: /etc/profile.d/profile_init.sh
-  failed_when: ruby_check.failed
+  when: ruby_check.failed
 
 
 - name: 'rubyインストール'
-  command: rbenv install 3.2.3 -v
-  command: rbenv global 3.2.3
-  failed_when: rubyq_check.failed
+  command:
+    cmd: rbenv install 3.2.3 -v
+  command:
+    cmd: rbenv global 3.2.3
+  when: ruby_check.failed
