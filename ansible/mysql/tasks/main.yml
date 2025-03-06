@@ -42,8 +42,7 @@
   become: yes
   vars_files:
     - ../vars/set_mysql.yml
-  shell: |
-    mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
+#  shell: | mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
 
 #- name: delete /root/.my.cnf
 #  file: name=/root/.my.cnf  state=absent
