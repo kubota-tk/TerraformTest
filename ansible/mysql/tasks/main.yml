@@ -40,7 +40,7 @@
 
 - name: change root user password
   vars_files:
-    - ../vars/set_mysql.yml
+    - set_mysql.yml
   shell: |
     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
 
