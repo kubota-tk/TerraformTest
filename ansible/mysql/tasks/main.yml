@@ -21,6 +21,7 @@
   become: yes
   yum:
     name:
+      - python3-pymysql
       - mysql-community-devel
       - mysql-community-server
       - mysql-community-client
