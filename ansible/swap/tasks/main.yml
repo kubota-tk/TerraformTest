@@ -21,9 +21,4 @@
     passno: '0'
     dump: '0'
     state: present
-- systemd:
-    name: swapfile.swap
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
-    lock_timeout: 180
+
