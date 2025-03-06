@@ -1,0 +1,2 @@
+my_user: "root"
+my_password: "{{ vault_mysql_password }}"
