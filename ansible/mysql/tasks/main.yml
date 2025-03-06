@@ -42,7 +42,7 @@
   become: yes
 #  vars_files:
 #    - ../vars/set_mysql.yml
-  shell: cat '{{ mysql_default_password.stdout }}' 
+  cmd: echo '{{ mysql_default_password.stdout }}' 
 #  message: '{{ mysql_default_password.stdout }}' 
 #- name: change root user password
 #  become: yes
