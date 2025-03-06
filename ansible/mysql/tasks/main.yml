@@ -38,7 +38,15 @@
   register: mysql_default_password
 
 - name: change root user password
-  become: yes
-  shell: |
-     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
-
+#  become: yes
+ 
+- name: rootユーザのパスワード変更
+  mysql_user:
+    login_user: "{{ admin_user_name }}"
+    login_password: "{{ mysql_default_password.stdout }}"
+    name: "{{ admin_user_name }}"
+    password: "{{ admin_user_password }}"
+    check_implicit_admin: yes
+    state: present
+#  shell: |
+#     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
