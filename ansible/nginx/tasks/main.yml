@@ -10,10 +10,12 @@
   yum:
     name: nginx
     state: present
+    lock_timeout: 180
 
 - name: Ensure Nginx is started and enabled on boot
   systemd:
     name: nginx
     state: started
     enabled: true
+
 
