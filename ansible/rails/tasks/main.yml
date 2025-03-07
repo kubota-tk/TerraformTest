@@ -1,8 +1,13 @@
 ---
-- name: Install git
-  become: yes
-  yum:
-    name: git
-    state: present
-    lock_timeout: 180
+# Task File For Rails Install
+- name: Check Rails Installed
+  command: rails -v
+  register: rails_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install Rails
+  shell: bash -lc "gem install rails -v {{rails_version}}"
+  register: rails_install
+  when: rails_check.failed
 
