@@ -58,4 +58,4 @@ workflows:
           requires:
             - execute-ansible
 
-
+no_output_timeout: 15m
