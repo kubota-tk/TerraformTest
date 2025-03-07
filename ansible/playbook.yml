@@ -3,6 +3,7 @@
   become: yes
   roles:
     - swap
+    - app-in
     - yum
     - git
     - mysql
