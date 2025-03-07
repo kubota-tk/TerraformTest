@@ -2,12 +2,12 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  stat: path="{{app_dir}}"
+  stat: path=/home/ec2-user/raisetech-live8-sample-app
   register: a
 
 - name: Git App
   git: 
-    repo: "{{repo_url}}"
+    repo: "{{repo_url}}"ww
     dest: "{{user_dir}}"  
   when: not a.stat.exists
 
