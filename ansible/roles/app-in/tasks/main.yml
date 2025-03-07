@@ -11,10 +11,9 @@
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
-#  when: (Check_App.stat.exists == true).skipp
-  when: Check_App == null
+  when: Check_App != app_dir
 
 - name: Git Message
   debug:
     msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_App.stat.exists
+  when: Check_App == app_dir
