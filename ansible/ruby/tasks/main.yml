@@ -11,17 +11,20 @@
   when: ruby_check.failed
 
 - name: 'bashの読み込み'
-  shell: echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-  shell: echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-  shell: source ~/.bash_profile
+  shell: |
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+    source ~/.bash_profile
   when: ruby_check.failed
 
-- name: 'Install ruby-build'
+- name: 'git ruby-build'
   git: repo=https://github.com/sstephenson/ruby-build.git dest=~/.rbenv/plugins/ruby-build
   when: ruby_check.failed
 
-- name: 'bashの実行'
+- name: 'install ruby-build'
   shell: ./install.sh
+  args:
+    chdir: ~/.rbenv/plugins/ruby-build
   when: ruby_check.failed
 
 - name: 'rubyのインストール'
