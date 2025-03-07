@@ -1,0 +1,18 @@
+---
+#アプリケーションダウンロード
+
+- name Check In App
+  commond: echo ""~/ls" | grep 'raisetech-live8-sample-app.git'
+  register: AppDir_Check
+  when AppDir == "raisetech-live8-sample-app.git"
+  ignore_errors: true
+  
+
+- name Git App
+    git: 
+      repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+      dest: ~/  
+  changed_when: false
+  ignore_errors: true
+  When: AppDir_Check.failed
+

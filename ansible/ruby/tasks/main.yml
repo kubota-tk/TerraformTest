@@ -5,13 +5,11 @@
   register: ruby_check
   ignore_errors: true
   changed_when: false
-#　when rbenv --version== 3.2.3
 
 - name: Ruby Version
   debug:
     var: ruby_check 
   ignore_errors: true
-  changed_when: false
 
 - name: 'Install rbenv'
   git: repo=https://github.com/sstephenson/rbenv.git dest=~/.rbenv
@@ -41,11 +39,11 @@
 
 - name: 'Global Ruby'
   shell: bash -lc "rbenv global {{ruby_version}}"
-#  when: ruby_check.failed
+  when: ruby_check.failed
   ignore_errors: true
 
-- name: Ruby Version
+- name: 'Global Ruby Version'
   debug:
     var: ruby_check
   ignore_errors: true
-  changed_when: false
+  when: ruby_check.failed
