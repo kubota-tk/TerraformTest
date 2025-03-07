@@ -33,5 +33,5 @@
   ignore_errors: true
 
 - name: 'Global Ruby'
-  shell: bash -lc rbenv global "{{ruby_version}}"
+  shell: bash -lc "rbenv global {{ruby_version}}"
   when: ruby_check.failed
