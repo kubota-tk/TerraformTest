@@ -3,13 +3,13 @@
 
 - name: Check In App
   stat: path=/home/ec2-user/raisetech-live8-sample-app
-  register: a
+  register: Check_app
 
 - name: Git App
   git: 
-    repo: "{{repo_url}}"ww
+    repo: "{{repo_url}}"
     dest: "{{user_dir}}"  
-  when: not a.stat.exists
+  when: Check_app.stat.exists
 
 - name: Git Message
   debug:
