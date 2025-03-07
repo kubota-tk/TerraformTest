@@ -3,13 +3,13 @@
 
 - name: Check In App
   stat: path="{{app_dir}}"
-  register: Check_App
+  register: a
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
     dest: "{{user_dir}}"  
-  when: not Check_App.stat.exists
+  when: not a.stat.exists
 
 - name: Git Message
   debug:
