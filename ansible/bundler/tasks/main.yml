@@ -12,6 +12,6 @@
   when: bundler_check.failed
 
 - name: Install Bundler
-  shell: "gem install bundler -v {{bundler_version}}" 
+  shell:bash -lc "gem install bundler -v {{bundler_version}}" 
   when: bundler_check.failed
 

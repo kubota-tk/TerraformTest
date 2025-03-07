@@ -1,7 +1,7 @@
 ---
 # Tasks File for Ruby
 - name: 'Check Ruby Installed'
-  command: ruby --version
+  shell: bash -lc "rbenv --version"
   register: ruby_check
   ignore_errors: true
   changed_when: false
@@ -28,7 +28,7 @@
   when: ruby_check.failed
 
 - name: 'Install Ruby'
-  shell: bash -lc rbenv install 3.2.3 -v
+  shell: bash -lc "rbenv install {{ruby_version}} -v"
   when: ruby_check.failed
   ignore_errors: true
 
