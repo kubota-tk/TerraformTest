@@ -4,7 +4,7 @@
 - name: Check In App
   stat:
     path: "{{app_dir}}"
-  register: Check_APP
+  register: Check_App
   ignore_errors: true
 
 - name: Git App
@@ -12,9 +12,9 @@
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
 #  when: (Check_App.stat.exists == true).skipp
-  when: not Check_APP.stat.exists
+  when: Check_App == null
 
 - name: Git Message
   debug:
     msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_APP.stat.exists
+  when: Check_App.stat.exists
