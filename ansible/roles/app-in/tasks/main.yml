@@ -2,18 +2,16 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  stat:
-    path: "{{app_dir}}"
+  stat: path="{{app_dir}}"
   register: Check_App
-  ignore_errors: true
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
-    dest: "{{app_dir}}"  
-  when: Check_App.stat.exists == false
+    dest: "{{user_dir}}"  
+  when: not Check_App.stat.exists
 
 - name: Git Message
   debug:
     msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_App.stat.exists == true
+  when: Check_App.stat.exists
