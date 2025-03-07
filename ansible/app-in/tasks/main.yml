@@ -5,10 +5,16 @@
   stat:
     path: "{{app_dir}}"
   register: Check_APP
-  when: (Check_APP.stat.exists == true).true or (Check_APP.stat.exist == false).skipp
+  ignore_errors: true
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
-  when: (Check_App.stat.exists == true).skipp
+#  when: (Check_App.stat.exists == true).skipp
+  when: not Check_APP.stat.exists
+
+- name: Git Message
+  debug:
+    msg: "既にRailsアプリケーションはクローン済みです"
+  when: Check_APP.stat.exists
