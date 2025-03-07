@@ -2,16 +2,13 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  command: ls -1 ~/ | grep "raisetech-live8-sample-app"
-  register: AppDir_check
-  when: AppDir_check == "raisetech-live8-sample-app".skipped
-  ignore_errors: true
-  
+  stat:
+    path: "{{app_dir}}"
+  register: Check_APP
+  when: (Check_APP.stat.exists == true).true or (Check_APP.stat.exist == false).skipp
 
 - name: Git App
   git: 
-    repo: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
-    dest: ~/ec2_user/  
-  ignore_errors: true
-  when: AppDir_check == "raisetech-live8-sample-app".skipped
-
+    repo: "{{repo_url}}"
+    dest: "{{app_dir}}"  
+  when: (Check_App.stat.exists == true).skipp
