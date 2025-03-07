@@ -21,9 +21,8 @@ jobs:
             aws cloudformation deploy --template cloudformation/vpc.yml --stack-name TerraformTest-vpc
             aws cloudformation deploy --template cloudformation/security.yml --stack-name TerraformTest-security
             aws cloudformation deploy --template cloudformation/resources.yml --stack-name TerraformTest-resources --capabilities CAPABILITY_NAMED_IAM
-  
+          no_output_timeout: 30m
   execute-ansible:
-    no_output_timeout: 20m
     executor: ansible-playbook/default
     steps:
       - checkout

@@ -11,5 +11,5 @@
   when: yarn_check.failed
 
 - name: Install Dependencies Packages
-  shell:bash -lc yarn install
+  shell: bash -lc yarn install
   when: yarn_check.failed
