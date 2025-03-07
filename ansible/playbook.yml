@@ -12,5 +12,6 @@
     - bundler
     - node
     - yarn
-    - nginx
+    - setup
+#    - nginx
 
