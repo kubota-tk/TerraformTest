@@ -5,6 +5,8 @@
   register: ruby_check
   ignore_errors: true
   changed_when: false
+  debug:
+    var: ruby_check
 
 - name: 'Install rbenv'
   git: repo=https://github.com/sstephenson/rbenv.git dest=~/.rbenv
