@@ -2,8 +2,11 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  stat: path= "{{appdir}}"
-  register: Check_app
+  debug:
+    msg "test{{asdf}}"
+
+#  stat: path= "{{app-dir}}"
+#  register: Check_app
 
 - name: Git App
   git: 
@@ -12,6 +15,6 @@
   when: Check_app.stat.exists
 
 - name: Git Message
-  debug:
+  debug: 
     msg: "既にRailsアプリケーションはクローン済みです"
   when: Check_App.stat.exists
