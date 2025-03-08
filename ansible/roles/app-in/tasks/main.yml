@@ -9,7 +9,7 @@
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
-  force: yes
+    force: yes
   when: not Check_App.stat.exists
 
 - name: Git Message
