@@ -24,8 +24,5 @@
       - libxml2-devel
       - libxslt-devel
       - sqlite-devel
-      - ImageMagick
-      - ImageMagick-devel
-      - ImageMagick-libs
     state: present
 

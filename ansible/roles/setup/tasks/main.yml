@@ -7,6 +7,15 @@
     dest: "{{app_dir}}/config/database.yml"
   changed_when: false
 
+- name: Install ImageMagick
+  become: yes
+  yum:
+    name:
+      - ImageMagick
+      - ImageMagick-devel
+      - ImageMagick-libs
+    state: present
+
 - name: mini_magick
   template:
     src: templates/application.rb.j2
