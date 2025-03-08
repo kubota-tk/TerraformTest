@@ -4,7 +4,7 @@
 - name: Check In App
   shell: bash -lc ls -l | grep "{{app_name}}/asdf"
   register: Check_App
-
+  ignore_errors: true
 
 - name: Git App
   git: 
