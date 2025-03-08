@@ -3,7 +3,7 @@
 
 - name: Check In App
   stat:
-    pass: "{{app_dir}}"
+    path: "{{app_dir}}"
   register: Check_App
 
 - name: Git App
