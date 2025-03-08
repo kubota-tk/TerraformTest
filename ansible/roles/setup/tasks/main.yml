@@ -14,7 +14,7 @@
   changed_when: false
 
 - name: browsersllist
-  shell: bash -lc npx update-browserslist-db@latest --update-db --yes
+  shell: bash -lc npx --yes browserslist-db@latest --update-db
   args:
     chdir: "{{app_dir}}"
   changed_when: false
