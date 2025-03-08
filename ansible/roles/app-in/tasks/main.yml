@@ -5,12 +5,19 @@
   stat: path= "{{app_dir}}"
   register: Check_App
 
+
+- name: Check In App 2
+  shell: bash -lc ls -l | grep raisetech-live8-sample-app
+  register: raisetech
+
+
 - name: Git App
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
     force: yes
-  when: Check_App.stat.exists == false
+  when: raisetech == "raisetech-live8-sample-app"
+ # when: Check_App.stat.exists == false
 
 - name: Git Message
   debug: 
