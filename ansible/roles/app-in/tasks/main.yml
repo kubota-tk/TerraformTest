@@ -6,20 +6,21 @@
   register: Check_App
 
 
-- name: Check In App 2
-  shell: bash -lc ls -l | grep raisetech-live8-sample-app
-  register: raisetech
+#- name: Check In App 2
+#  shell: bash -lc ls -l | grep raisetech-live8-sample-app
+#  register: raisetech
 
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
-    force: yes
-  when: raisetech == "raisetech-live8-sample-app"
- # when: Check_App.stat.exists == false
+ #   force: yes
+    ignore_errors: true 
+# when: raisetech == "raisetech-live8-sample-app"
+  when: Check_App.stat.exists == false
 
 - name: Git Message
   debug: 
     msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_App.stat.exists == true
+  when: Check_App.stat.exists
