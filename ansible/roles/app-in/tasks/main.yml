@@ -2,18 +2,14 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  shell: bash -lc ls -l | grep "{{app_name}}"
+  shell: bash -lc ls -l | grep "{{app_name}}/asdf"
   register: Check_App
 
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
-    dest: "{{app_dir}}"  
+    dest: "{{app_dir}}/asdf"  
   ignore_errors: true
   when: Check_App is false
 
-- name: Git Message
-  debug: 
-    msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_App == true
