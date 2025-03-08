@@ -8,9 +8,13 @@
   changed_when: false
 
 - name: browsersllist
-  shell: |
-    npx browserslist --update-db
-    yarn add yarn@1.22.19
+  shell: npx browserslist --update-db
+  args:
+    chdir: "{{app_dir}}"
+  changed_when: false
+
+- name: yarn add
+  shell: yarn add yarn@1.22.19
   args:
     chdir: "{{app_dir}}"
   changed_when: false
