@@ -24,7 +24,7 @@
   yum:
     name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
-  when: check_Magick.failed
+  when: Check_Magick.failed
   become: yes
 
 - name: Remi
