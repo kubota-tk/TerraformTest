@@ -7,14 +7,14 @@
     dest: "{{app_dir}}/config/database.yml"
   changed_when: false
 
-- name: browsersllist
-  shell: bash -lc npx update-browserslist-db@latest --update-db --yes
+- name: yarn add
+  shell: bash -lc yarn add yarn@1.22.19
   args:
     chdir: "{{app_dir}}"
   changed_when: false
 
-- name: yarn add
-  shell: bash -lc yarn add yarn@1.22.19
+- name: browsersllist
+  shell: bash -lc npx update-browserslist-db@latest --update-db --yes
   args:
     chdir: "{{app_dir}}"
   changed_when: false
