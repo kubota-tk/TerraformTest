@@ -16,4 +16,4 @@
 - name: Git Message
   debug: 
     msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_App == app_name
+  when: Check_App == true
