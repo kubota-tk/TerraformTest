@@ -8,7 +8,7 @@
 - name: Git App
   git: 
     repo: "{{repo_url}}"
-    dest: "{{user_dir}}"  
+    dest: "{{app_dir}}"  
   when: not Check_App.stat.exists
 
 - name: Git Message
