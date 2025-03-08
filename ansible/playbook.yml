@@ -7,9 +7,9 @@
 
   roles:
     - swap
+    - git
     - app-in
     - yum
-    - git
     - mysql
     - ruby
     - rails
