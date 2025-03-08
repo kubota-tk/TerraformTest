@@ -1,6 +1,10 @@
 ---
 - hosts: all
   become: yes
+
+  vars:
+    aws_db_pw : "{{ (lookup('env','AWS_DB_PW')) }}"
+
   roles:
     - swap
     - app-in
