@@ -13,16 +13,11 @@
     chdir: "{{app_dir}}"
   changed_when: false
 
-- name: npx
-  become: yes
-  shell: bash -lc "npm install --location=global npx"
-  
-
-- name: browsersllist
-  shell: bash -lc npx browserslist --update-db --yes
-  args:
-    chdir: "{{app_dir}}"
-  changed_when: false
+#- name: browsersllist
+#  shell: bash -lc npx browserslist --update-db --yes
+#  args:
+#    chdir: "{{app_dir}}"
+# changed_when: false
 
 - name: bin/setup
   shell: bash -lc "bin/setup"
