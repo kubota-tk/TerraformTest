@@ -2,7 +2,7 @@
 #Imagemagicknインストール
 - name: Check install Imagemagick
   shell: magick --version
-  register: Check_magick
+  register: Check_Magick
   ignore_errors: true
   changed_when: false
 
@@ -10,14 +10,14 @@
   yum:
     name: https://dl.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/e/epel-release-7-14.noarch.rpm
     state: present
-  when: Check_magick.failed
+  when: Check_Magick.failed
   become: yes
 
 - name: Install Yum-utils
   yum:
    name: yum-utils
    state: present
-  when: Check_magick.failed
+  when: Check_Magick.failed
   become: yes
 
 - name: Install remi 
