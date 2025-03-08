@@ -2,35 +2,28 @@
 
 # Tasks File For Setup
 - name: Create database.yml
-#  template:
-#    src: templates/database.yml.j2
-#    dest: "{{app_dir}}/config/database.yml"
-#  changed_when: false
-  command: cp {{app_dir}}/config/database.yml.sample {{app_dir}}/config/database.yml
-   
+  template:
+    src: templates/database.yml.j2
+    dest: "{{app_dir}}/config/database.yml"
+  changed_when: false
 
-- name: database.yml
-  lineinfile: >-
-    dest='{{app_dir}}/config/database.yml'
-    state=present
-    backrefs=yes
-    regexp='{{ item.regexp }}'
-    line='{{ item.line }}'
-  with_items:
-  - regexp: 'password:'
-    line: '{{marumarumarumarumarumaru}}'
-  - regexp: 'socket:*'
-    line: 'socket: {{socket}}'
-  ## - regexp: 'port: 3000'
-  ##   line: '## port: 3000'
+- name: mini_magick
+  template:
+    src: templates/application.rb.j2
+    dest: "{{app_dir}}/config/application.rb"
+  changed_when: false
 
-
-
-
-
+- name: browsersllist
+  shell: |
+    npx browserslist --update-db
+    yarn add yarn@1.22.19
+  args:
+    chdir: "{{app_dir}}"
+  changed_when: false
 
 - name: bin/setup
   shell: bash -lc "bin/setup"
   register: setup_result
   args:
     chdir: "{{app_dir}}"
+  changed_when: false

@@ -26,5 +26,6 @@
       - sqlite-devel
       - ImageMagick
       - ImageMagick-devel
+      - ImageMagick-libs
     state: present
 

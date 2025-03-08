@@ -1,2 +1,9 @@
 ---
+rbenv_git: https://github.com/sstephenson/rbenv.git
+rbenv_dest: ~/.rbenv
+
+build_git: https://github.com/sstephenson/ruby-build.git
+
 ruby_version: 3.2.3
+
+
