@@ -13,6 +13,10 @@
     chdir: "{{app_dir}}"
   changed_when: false
 
+- name: npx
+  shell: bash -lc npm install -g npx
+  
+
 - name: browsersllist
   shell: bash -lc npx browserslist --update-db --yes
   args:
