@@ -2,14 +2,14 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  shell: bash -lc ls -l | grep "{{app_name}}/asdf"
+  stat:
+    pass: "{{app_dir}}"
   register: Check_App
-  ignore_errors: true
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
-    dest: "{{app_dir}}/asdf"  
+    dest: "{{app_dir}}"  
   ignore_errors: true
-  when: Check_App is false
+  when: not Check_App.stat.exist
 
