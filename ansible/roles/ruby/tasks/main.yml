@@ -8,8 +8,8 @@
 
 - name: Install rbenv
   git: 
-    repo: {{rbenv_git}}
-    dest: {{rbenv_dest}}
+    repo: "{{rbenv_git}}"
+    dest: "{{rbenv_dest}}"
   when: ruby_check.failed
 
 - name: Bash Write
@@ -21,14 +21,14 @@
 
 - name: Git Ruby-build
   git:
-    repo: {{build_git}}
-    dest: {{rbenv_dest}}/plugins/ruby-build
+    repo: "{{build_git}}"
+    dest: "{{rbenv_dest}}/plugins/ruby-build"
   when: ruby_check.faile
 
 - name: Install Ruby-build
   shell: ./install.sh
   args:
-    chdir: {{rbenv_dest}}/plugins/ruby-build
+    chdir: "{{rbenv_dest}}/plugins/ruby-build"
   when: ruby_check.failed
 
 - name: Install Ruby
