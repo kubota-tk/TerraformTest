@@ -23,7 +23,7 @@
   git:
     repo: "{{build_git}}"
     dest: "{{rbenv_dest}}/plugins/ruby-build"
-  when: ruby_check.faile
+  when: ruby_check.failed
 
 - name: Install Ruby-build
   shell: ./install.sh
