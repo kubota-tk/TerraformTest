@@ -14,7 +14,8 @@
   changed_when: false
 
 - name: npx
-  shell: bash -lc npm install -g npx
+  become: yes
+  shell: bash -lc "npm install -g npx"
   
 
 - name: browsersllist
