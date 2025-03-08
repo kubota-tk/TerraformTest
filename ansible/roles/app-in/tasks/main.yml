@@ -15,10 +15,8 @@
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
- #   force: yes
-    ignore_errors: true 
-# when: raisetech == "raisetech-live8-sample-app"
-  when: Check_App.stat.exists == false
+  ignore_errors: true
+  when: not Check_App.stat.exists
 
 - name: Git Message
   debug: 
