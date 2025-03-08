@@ -3,7 +3,7 @@
 
 - name: Check In App
   stat:
-    path: "{{app_dir}}"
+    path: "{{app_dir}}"asdf
   register: Check_App
 
 - name: Git App
