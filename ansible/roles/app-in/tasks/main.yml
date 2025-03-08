@@ -10,9 +10,9 @@
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
     force: yes
-  when: not Check_App.stat.exists
+  when: Check_App.stat.exists == false
 
 - name: Git Message
   debug: 
     msg: "既にRailsアプリケーションはクローン済みです"
-  when: Check_App.stat.exists
+  when: Check_App.stat.exists == true
