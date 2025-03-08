@@ -1,0 +1,5 @@
+---
+asdf: asdfの変数テストです
+repo_url: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
+appdir: /home/ec2-user/raisetech-live8-sample-app
+user_dir: /home/ec2-user/

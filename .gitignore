@@ -6,7 +6,7 @@ ansible/roles/git/vars/**
 ansible/roles/mysql/vars/**
 ansible/roles/ruby/vars/**
 ansible/roles/rails/vars/**
-ansible/roles/app-in/vars/**
+#ansible/roles/app-in/vars/**
 ansible/roles/bundler/vars/**
 ansible/roles/node/vars/**
 ansible/roles/yarn/vars/**
