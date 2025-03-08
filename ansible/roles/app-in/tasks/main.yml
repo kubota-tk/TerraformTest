@@ -2,17 +2,14 @@
 #アプリケーションダウンロード
 
 - name: Check In App
-  debug:
-    msg "test{{asdf}}"
-
-#  stat: path= "{{app-dir}}"
-#  register: Check_app
+  stat: path= "{{app-dir}}"
+  register: Check_app
 
 - name: Git App
   git: 
     repo: "{{repo_url}}"
     dest: "{{user_dir}}"  
-  when: Check_app.stat.exists
+  when: not Check_App.stat.exists
 
 - name: Git Message
   debug: 
