@@ -25,3 +25,10 @@
   args:
     chdir: "{{app_dir}}"
   changed_when: false
+
+- name: bin/dev
+  shell: bash -lc "bin/dev"
+  register: dev_result
+  args:
+    chdir: "{{app_dir}}"
+  changed_when: false
