@@ -21,12 +21,12 @@
   changed_when: false
 
 
-- name: bin/rails server -b 0.0.0.0
-  ansible.builtin.shell:
-    cmd: /bin/bash -lc "bin/rails server -b 0.0.0.0"
-  args:
-    chdir: "{{app_dir}}"
-  changed_when: false
+#- name: bin/rails server -b 0.0.0.0
+#  ansible.builtin.shell:
+#    cmd: /bin/bash -lc "bin/rails server -b 0.0.0.0"
+#  args:
+#    chdir: "{{app_dir}}"
+#  changed_when: false
 
 
 
@@ -34,7 +34,7 @@
 - name: start puma
   ansible.builtin.service:
     name: puma
-    state: restarted
+    state: started
   become: yes
 
 
