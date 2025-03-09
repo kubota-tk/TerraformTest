@@ -12,5 +12,5 @@
     dest: "{{app_dir}}"  
 #    force: yes
   ignore_errors: true
-  when: not Check_App.stat.exist
+  when: not Check_App.stat.exists
 
