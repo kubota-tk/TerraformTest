@@ -42,12 +42,20 @@
     cmd: "systemctl stop mysqld"
   changed_when: false
 
-- name: ReStart nginx,puma
-  shell:
-    cmd: "systemctl restart nginx puma"
+- name: assets precompile
+  shell: /bin/bash -lc "bin/rails assets:precompile"
+  args:
+    chdir: "{{app_dir}}"
   changed_when: false
 
-- name: rails s
-  shell:
-    cmd: "rails s"
-  changed_when: false
+- name: start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  become: yes
+
+- name: start puma
+  ansible.builtin.service:
+    name: puma
+    state: restarted
+  become: yes
