@@ -45,7 +45,7 @@ jobs:
           name: execute
           command: |
             cd serverspec
-            TARGET_HOST=18.176.70.82 bundle exec rspec
+            TARGET_HOST=52.197.119.114 bundle exec rspec
 
 workflows:
   TerraformTest-workflow:
