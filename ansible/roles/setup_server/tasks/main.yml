@@ -8,7 +8,7 @@
 
 - name: Edit puma.service
   template:
-    src: templates/puma.service.j2
+    src: templates/puma.service
     dest: "/etc/systemd/system/puma.service"
   changed_when: false
 
