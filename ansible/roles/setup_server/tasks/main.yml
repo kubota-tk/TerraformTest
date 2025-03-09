@@ -1,8 +1,53 @@
 ---
-- name: Install git
-  become: yes
-  yum:
-    name: git
-    state: present
-    lock_timeout: 180
+# Tasks File For Setup_server
+- name: Edit puma.rb
+  template:
+    src: templates/puma.rb.j2
+    dest: "{{app_dir}}/config/puma.rb"
+  changed_when: false
 
+- name: Edit puma.service
+  template:
+    src: templates/puma.service.j2
+    dest: "/etc/systemd/system/puma.service"
+  changed_when: false
+
+- name: Reload puma.service
+  shell:
+    cmd: "systemctl daemon-reload"
+  changed_when: false
+
+#- name: creat socket tmp/sockets
+#  ansible.builtin.file:
+#    path: "{{app_dir}}/tmp/sockets"
+#    state: directory
+#    owner: "{{ansible_user}}"
+#    mode: 0755
+
+#- name: creat socket tmp/pids
+#  ansible.builtin.file:
+#    path: "{{app_dir}}/tmp/pids"
+#    state: directory
+#    owner: "{{ansible_user}}"
+#    mode: 0755
+
+- name: Edit nginx.conf
+  template:
+    src: templates/nginx.conf.j2
+    dest: "/etc/nginx/nginx.conf"
+  changed_when: false
+  
+- name: Stop mysql.service
+  shell:
+    cmd: "systemctl stop mysqld"
+  changed_when: false
+
+- name: ReStart nginx,puma
+  shell:
+    cmd: "systemctl restart nginx puma"
+  changed_when: false
+
+- name: rails s
+  shell:
+    cmd: "rails s"
+  changed_when: false

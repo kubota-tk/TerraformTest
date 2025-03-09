@@ -13,9 +13,10 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: root
+  username: admin
   password: {{aws_db_pw}}
-  Socket: /var/lib/mysql/mysql.sock
+  socket: /var/lib/mysql/mysql.sock
+  host: {{rds_endpoint}}
 
 development:
   <<: *default

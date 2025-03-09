@@ -3,7 +3,8 @@
   become: yes
 
   vars:
-    aws_db_pw : "{{ (lookup('env','AWS_DB_PW')) }}"
+    aws_db_pw: "{{ (lookup('env','AWS_DB_PW')) }}"
+    rds_endpoint: "{{ (lookup('env','RDS_ENDPOINT')) }}"   
 
   roles:
     - swap
@@ -19,4 +20,4 @@
     - imagemagick
     - nginx
     - setup
-
+    - setup_server
