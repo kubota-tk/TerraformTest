@@ -13,12 +13,6 @@
     chdir: "{{app_dir}}"
   changed_when: false
 
-#- name: browsersllist
-#  shell: bash -lc npx browserslist --update-db --yes
-#  args:
-#    chdir: "{{app_dir}}"
-# changed_when: false
-
 - name: bin/setup
   shell: bash -lc "bin/setup"
   register: setup_result
@@ -26,9 +20,9 @@
     chdir: "{{app_dir}}"
   changed_when: false
 
-- name: bin/dev
-  shell: bash -lc "bin/dev"
-  register: dev_result
-  args:
-    chdir: "{{app_dir}}"
-  changed_when: false
+#- name: bin/dev
+#  shell: bash -lc "bin/dev"
+#  register: dev_result
+#  args:
+#    chdir: "{{app_dir}}"
+#  changed_when: false
