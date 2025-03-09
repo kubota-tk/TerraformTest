@@ -1,0 +1,28 @@
+# Update yum
+- name: update yum
+  become_user: root
+  yum:
+    name: '*'
+    state: latest
+
+# Install yum
+- name: yum install package
+  become: yes
+  yum:
+    name:
+      - gcc-c++
+      - glibc-headers
+      - openssl-devel
+      - readline
+      - libyaml-devel
+      - readline-devel
+      - zlib
+      - zlib-devel
+      - libffi-devel
+      - libxml2
+      - libxslt
+      - libxml2-devel
+      - libxslt-devel
+      - sqlite-devel
+    state: present
+

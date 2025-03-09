@@ -1,0 +1,17 @@
+---
+#Task File For Bundler
+
+- name: Check Bundler Installed
+  command: bundler _{{bundler_version}}_ --version
+  register: bundler_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install Bundler Viersion
+  shell: export "BUNDLER_VERSION={{bundler_version}}"
+  when: bundler_check.failed
+
+- name: Install Bundler
+  shell: bash -lc "gem install bundler -v {{bundler_version}}" 
+  when: bundler_check.failed
+

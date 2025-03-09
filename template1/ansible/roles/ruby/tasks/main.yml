@@ -1,0 +1,48 @@
+---
+# Tasks File for Ruby
+- name: Check Ruby Installed
+  shell: bash -lc "ruby -v"
+  register: ruby_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install rbenv
+  git: 
+    repo: "{{rbenv_git}}"
+    dest: "{{rbenv_dest}}"
+  when: ruby_check.failed
+
+- name: Bash Write
+  shell: |
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
+    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+    source ~/.bash_profile
+  when: ruby_check.failed
+
+- name: Git Ruby-build
+  git:
+    repo: "{{build_git}}"
+    dest: "{{rbenv_dest}}/plugins/ruby-build"
+  when: ruby_check.failed
+
+- name: Install Ruby-build
+  shell: ./install.sh
+  args:
+    chdir: "{{rbenv_dest}}/plugins/ruby-build"
+  when: ruby_check.failed
+
+- name: Install Ruby
+  shell: bash -lc "rbenv install {{ruby_version}} -v"
+  when: ruby_check.failed
+  ignore_errors: true
+
+- name: Global Ruby
+  shell: bash -lc "rbenv global {{ruby_version}}"
+  when: ruby_check.failed
+  ignore_errors: true
+
+- name: Global Ruby Version
+  debug:
+    var: ruby_check
+  ignore_errors: true
+  when: ruby_check.failed

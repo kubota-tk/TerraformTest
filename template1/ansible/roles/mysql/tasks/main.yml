@@ -1,0 +1,46 @@
+---
+- name: Uninstall mysql-server
+  become: yes
+  yum:
+    name: mysql-server
+    state: absent
+
+- name: Uninstall mariaDB
+  become: yes
+  yum:
+    name: mariadb*
+    state: absent
+
+- name: Add the MySQL from YumRepository
+  become: yes
+  yum:
+    name: https://repo.mysql.com/mysql84-community-release-el7-1.noarch.rpm
+    state: present
+
+- name: Install mysql-community-devel,server,client
+  become: yes
+  yum:
+    name:
+      - mysql-community-devel
+      - mysql-community-server
+      - mysql-community-client
+    state: present
+
+- name: Start MySQL service
+  become: yes
+  systemd:
+    name: mysqld
+    state: started
+  ignore_errors: true
+
+##
+##varsに変数設定したが、パスワードがshellに載ることになり、エラー
+##
+## - name: get temporary password
+##  shell: sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
+##  register: mysql_default_password
+##
+## - name: change root user password
+##  become: yes
+##  shell: |
+##     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"

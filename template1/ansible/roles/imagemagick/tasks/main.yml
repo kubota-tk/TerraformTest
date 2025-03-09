@@ -1,0 +1,51 @@
+---
+#Imagemagicknインストール
+- name: Check install Imagemagick
+  shell: magick --version
+  register: Check_Magick
+  ignore_errors: true
+  changed_when: false
+
+- name: Install Epel
+  yum:
+    name: https://dl.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/e/epel-release-7-14.noarch.rpm
+    state: present
+  when: Check_Magick.failed
+  become: yes
+
+- name: Install Yum-utils
+  yum:
+   name: yum-utils
+   state: present
+  when: Check_Magick.failed
+  become: yes
+
+- name: Install remi 
+  yum:
+    name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+    state: present
+  when: Check_Magick.failed
+  become: yes
+
+- name: Remi
+  shell: yum-config-manager --enable remi
+  when: Check_Magick.failed
+  become: yes
+
+- name: Install ImageMagick
+  yum:
+    name: "{{imagemagick_pkgs}}"
+    state: present  
+  vars:
+    imagemagick_pkgs:
+      - ImageMagick7
+      - ImageMagick7-devel
+    enablerepo: remi
+  when: Check_Magick.failed
+  become: yes
+
+- name: mini_magick
+  template:
+    src: templates/application.rb.j2
+    dest: "{{app_dir}}/config/application.rb"
+  changed_when: false

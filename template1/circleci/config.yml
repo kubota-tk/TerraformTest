@@ -1,0 +1,60 @@
+version: 2.1
+
+orbs:
+  aws-cli: circleci/aws-cli@5.1.0
+  ansible-playbook: orbss/ansible-playbook@0.0.5
+  ruby: circleci/ruby@2.2.1
+
+jobs:
+  execute-cloudformation:
+    executor: aws-cli/default
+    steps:
+      - checkout
+      - aws-cli/setup:
+          aws_access_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
+      - run: 
+          name: Deploy to was from template
+          command: |
+            set -x
+            aws cloudformation deploy --template cloudformation/vpc.yml --stack-name TerraformTest-vpc
+            aws cloudformation deploy --template cloudformation/security.yml --stack-name TerraformTest-security
+            aws cloudformation deploy --template cloudformation/resources.yml --stack-name TerraformTest-resources --capabilities CAPABILITY_NAMED_IAM
+  execute-ansible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+              - SHA256:Pzp/qPVIBuc7WoYvlPLV/wCYRyg3lDrh4E/C0NQLnMA
+      - ansible-playbook/install:
+          version: 2.10.7
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: -u ec2-user -i ansible/inventory --private-key ~/.ssh/TerraformTest-keypair
+  execute-serverspec:
+    executor: ruby/default
+    steps:
+      - checkout
+      - ruby/install:
+          version: 3.2.3
+      - ruby/install-deps:
+          app-dir: serverspec
+      - run:
+          name: execute
+          command: |
+            cd serverspec
+            TARGET_HOST=35.77.215.146 bundle exec rspec
+
+workflows:
+  TerraformTest-workflow:
+    jobs:
+      - execute-cloudformation
+      - execute-ansible:
+          requires:
+            - execute-cloudformation
+      - execute-serverspec: 
+          requires:
+            - execute-ansible
+

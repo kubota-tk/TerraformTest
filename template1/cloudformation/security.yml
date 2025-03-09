@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Description: SecurityGroups for RaiseTech-Lecture13
+
+Parameters:        
+  ProjectName:
+    Type: String
+    Description: Project Name
+    Default: TerraformTest
+
+Resources:
+
+## EC2のSecurityGroupを作成　##
+
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${ProjectName}-ec2-sg
+      GroupDescription:  Allow connections from SSH and ALB
+      VpcId:  !ImportValue VPCID
+      SecurityGroupIngress:        
+        - IpProtocol: tcp
+          Fromport: 22
+          Toport: 22
+          CidrIp: 0.0.0.0/0  #Circleci無料版の仕様のため、全てのIP許可とする
+        - IpProtocol: tcp    #80番ポートでのALBからの受信を許可する(HTTP)
+          Fromport: 80
+          Toport: 80
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-ec2-sg
+
+## RDS SecurityGroupを作成 ##
+
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${ProjectName}-rds-sg
+      GroupDescription: Allow connection from EC2
+      VpcId: !ImportValue VPCID
+      SecurityGroupIngress:
+        IpProtocol: tcp
+        Fromport: 3306
+        Toport: 3306
+        SourceSecurityGroupID: !Ref EC2SecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-rds-sg
+
+## ELB SecurityGroupを作成 ##
+
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: !Sub ${ProjectName}-alb-sg
+      GroupDescription: Allow connection from Port80 
+      VpcId: !ImportValue VPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          Fromport: 80
+          Toport: 80
+          CidrIp: 0.0.0.0/0  #Circleci無料版の仕様のため、全てのIP許可とする
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-alb-sg
+          
+## Outputsを作成 ##
+
+Outputs:
+  EC2SecurityGroupId:
+    Description: EC2SecurityGroup ID
+    Value: !Ref EC2SecurityGroup
+    Export: 
+      Name: EC2-SG-ID
+  
+  RDSSecurityGroupId:
+    Description: RDSSecurityGroup ID
+    Value: !Ref RDSSecurityGroup
+    Export: 
+      Name: RDS-SG-ID
+  
+  ALBSecurityGroupId:
+    Description: ALBSecurityGroup ID
+    Value: !Ref ALBSecurityGroup
+    Export: 
+      Name: ALB-SG-ID
+
