@@ -17,6 +17,6 @@
     - node
     - yarn
     - imagemagick
+    - nginx
     - setup
-#    - nginx
 
