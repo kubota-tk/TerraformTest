@@ -23,7 +23,7 @@
 
 - name: bin/rails server -b 0.0.0.0
   ansible.builtin.shell:
-    cmd: /bin/bash -lc "bin/railbin/rails server -b 0.0.0.0"
+    cmd: /bin/bash -lc "bin/rails server -b 0.0.0.0"
   args:
     chdir: "{{app_dir}}"
   changed_when: false
