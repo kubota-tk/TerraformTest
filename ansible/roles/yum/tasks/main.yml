@@ -1,6 +1,6 @@
 # Update yum
 - name: update yum
-  become_user: root
+  become: yes
   yum:
     name: '*'
     state: latest
