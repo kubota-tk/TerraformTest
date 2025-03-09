@@ -31,11 +31,11 @@
 
 
 
-- name: start puma
-  ansible.builtin.service:
-    name: puma
-    state: started
-  become: yes
+#- name: start puma
+#  ansible.builtin.service:
+#    name: puma
+#    state: started
+#  become: yes
 
 
 
