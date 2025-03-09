@@ -1,21 +1,21 @@
 # 第一工程で行ったこと（1_SetCF.md）
 
 ## 概要
-CloudFormation、CircleCI、Ansible、Serverspecを使ってクラウドイ>ンフラ環境の自動構築。
+CloudFormation、CircleCI、Ansible、Serverspecを使ってクラウドインフラ環境の自動構築とWebアプリケーションの自動デプロイ。
 - GitHubのPushがトリガーになり、CircleCIのWorkflowが実行
 - Job1としてCloudFormation
 - Job2としてAnsible(CloudFormationがトリガー)
 - Job3としてServerspec（Ansibleがトリガー）
 
 ## 1.CircleCIの環境変数とSSH Keyを設定
-CircleCI上で、環境変数「AWS_ACCESS_KEY_ID」「AWS_DB_PW」「AWS_DEFAULT_REGION」「AWS_SECRET_ACCESS_KEY」を設定した。
+- CircleCI上で、環境変数「AWS_ACCESS_KEY_ID」「AWS_DB_PW」「AWS_DEFAULT_REGION」「AWS_SECRET_ACCESS_KEY」を設定した。
 ![1.1_environment](images1/1.1_environment.png)  
 
-CircleCI上で「SSH Key」を設定した。
+- CircleCI上で「SSH Key」を設定した。
 ![1.2_ssh_key](images1/1.2_ssh_key.png)  
 
 template（CircleCIの設定ファイル）
- - [**config.yml**](/template1/circleci/config.yml)  
+- [**config.yml**](/template1/circleci/config.yml)  
 
 
 ## 2. Cloudformationの各テンプレート実行
