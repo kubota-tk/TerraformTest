@@ -43,18 +43,20 @@
   shell: bash -lc |
     echo "Installing ruby {{ruby_version}}"
     "{{rbenv_dest}}/bin/rbenv install {{ruby_version}}"
+    "{{rbenv_dest}}/bin/rbenv global {{ruby_version}}"
+    "{{rbenv_dest}}/bin/rbenv rehash" 
   when: ruby_check.failed
   ignore_errors: true
 
-- name: Global Ruby
-  shell: bash -lc "{{rbenv_dest}}/bin/rbenv global {{ruby_version}}"
-  when: ruby_check.failed
-  ignore_errors: true
+#- name: Global Ruby
+#  shell: bash -lc "{{rbenv_dest}}/bin/rbenv global {{ruby_version}}"
+#  when: ruby_check.failed
+#  ignore_errors: true
 
-- name: Rehash Ruby
-  shell: "{{rbenv_dest}}/bin/rbenv rehash"
-  when: ruby_check.failed
-  ignore_errors: true
+#- name: Rehash Ruby
+#  shell: "{{rbenv_dest}}/bin/rbenv rehash"
+#  when: ruby_check.failed
+#  ignore_errors: true
 
 #- name: Global Ruby Version
 #  debug:
