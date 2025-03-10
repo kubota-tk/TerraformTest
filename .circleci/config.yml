@@ -42,7 +42,7 @@ jobs:
       - ruby/install-deps:
           app-dir: serverspec
       - run:
-          name: execute
+          name: execute serverspec test
           command: |
             cd serverspec
             TARGET_HOST=54.248.178.66 bundle exec rspec

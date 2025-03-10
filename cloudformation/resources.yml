@@ -211,12 +211,12 @@ Resources:
       Targets:
       - Id: !Ref EC2Instance
       HealthCheckEnabled: true
-      HealthCheckIntervalSeconds: 30
-      HealthCheckPath: /
-      HealthCheckPort: traffic-port
+      HealthCheckIntervalSeconds: 60
+#      HealthCheckPath: /
+#      HealthCheckPort: traffic-port
       HealthCheckProtocol: HTTP
-      HealthCheckTimeoutSeconds: 5
-      HealthyThresholdCount: 5
+      HealthCheckTimeoutSeconds: 10
+      HealthyThresholdCount: 2
       UnhealthyThresholdCount: 2
       Matcher:
         HttpCode: 200
@@ -251,13 +251,16 @@ Resources:
         ServerSideEncryptionConfiguration:
           - ServerSideEncryptionByDefault:
               SSEAlgorithm: AES256
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-s3-bucket
 
 ## IAM Policy ##
 
  S3AccessPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
-      ManagedPolicyName: !Sub ${ProjectName}-s3acsecc-policy
+      ManagedPolicyName: !Sub ${ProjectName}-s3access-policy
       PolicyDocument:
         Version: "2012-10-17"
         Statement:

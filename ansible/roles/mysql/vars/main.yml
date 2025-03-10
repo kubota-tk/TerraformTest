@@ -1,0 +1,4 @@
+---
+##MySQLのインストール先
+
+mysql_url: https://repo.mysql.com/mysql84-community-release-el7-1.noarch.rpm
