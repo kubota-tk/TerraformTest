@@ -6,15 +6,15 @@
   ignore_errors: true
   changed_when: false
 
-#- name: Install Rails
-#  shell: bash -lc "gem install rails -v {{rails_version}}"
-#  register: rails_install
-#  when: rails_check.failed
-
 - name: Install Rails
-  gem:
-    name: rails
-    state: present
-    executable: "{{rbenv_dest}}/shims/gem"
-    user_install: false
-    version: "{{rails_version}}"
+  shell: bash -lc "gem install rails -v {{rails_version}}"
+  register: rails_install
+  when: rails_check.failed
+
+#- name: Install Rails
+#  gem:
+#    name: rails
+#    state: present
+#    executable: "{{rbenv_dest}}/shims/gem"
+#    user_install: false
+#    version: "{{rails_version}}"
