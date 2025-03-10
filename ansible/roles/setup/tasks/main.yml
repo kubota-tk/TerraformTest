@@ -13,6 +13,12 @@
     dest: "{{app_dir}}/config/environments/development.rb"
   changed_when: false
 
+- name: Create storage.yml
+  template:
+    src: templates/storage.yml.j2
+    dest: "{{app_dir}}/config/storage.yml"
+  changed_when: false
+
 - name: yarn add
   shell: bash -lc yarn add yarn@1.22.19
   args:
