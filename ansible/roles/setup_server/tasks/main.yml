@@ -19,19 +19,19 @@
   changed_when: false
   become: yes
 
-#- name: creat socket tmp/sockets
-#  ansible.builtin.file:
-#    path: "{{app_dir}}/tmp/sockets"
-#    state: directory
-#    owner: "{{ansible_user}}"
-#    mode: 0755
+- name: creat socket tmp/sockets
+  ansible.builtin.file:
+    path: "{{app_dir}}/tmp/sockets"
+    state: directory
+    owner: "{{ansible_user}}"
+    mode: 0755
 
-#- name: creat socket tmp/pids
-#  ansible.builtin.file:
-#    path: "{{app_dir}}/tmp/pids"
-#    state: directory
-#    owner: "{{ansible_user}}"
-#    mode: 0755
+- name: creat socket tmp/pids
+  ansible.builtin.file:
+    path: "{{app_dir}}/tmp/pids"
+    state: directory
+    owner: "{{ansible_user}}"
+    mode: 0755
 
 - name: Edit nginx.conf
   template:
