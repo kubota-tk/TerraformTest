@@ -3,6 +3,6 @@
   yum:
     name: git
     state: present
-    become: yes
     lock_timeout: 180
+  become: yes
 
