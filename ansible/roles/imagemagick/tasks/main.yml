@@ -1,38 +1,43 @@
 ---
-#Imagemagicknインストール
-- name: Check install Imagemagick
-  shell: magick --version
+##Imagemagicknインストール
+
+##Imagemagickの有無をチェック
+- name: Check Imagemagick
+  shell: magick -v
   register: Check_Magick
-  ignore_errors: true
+  ignore_errors: yes
   changed_when: false
 
+##サードパーティ製リポジトリEpel
 - name: Install Epel
-  yum:
+  ansible.builtin.yum:
     name: https://dl.fedoraproject.org/pub/archive/epel/7/x86_64/Packages/e/epel-release-7-14.noarch.rpm
     state: present
   when: Check_Magick.failed
   become: yes
 
 - name: Install Yum-utils
-  yum:
+  ansible.builtin.yum:
    name: yum-utils
    state: present
   when: Check_Magick.failed
   become: yes
 
+##サードパーティ製リポジトリremi
 - name: Install remi 
-  yum:
+  ansible.builtin.yum:
     name: http://rpms.remirepo.net/enterprise/remi-release-7.rpm
     state: present
   when: Check_Magick.failed
   become: yes
 
 - name: Remi
-  shell: yum-config-manager --enable remi
+  ansible.builtin.shell:
+    cmd: yum-config-manager --enable remi
   when: Check_Magick.failed
   become: yes
 
-- name: Install ImageMagick
+- name: Yum ImageMagick
   yum:
     name: "{{imagemagick_pkgs}}"
     state: present  
@@ -44,6 +49,7 @@
   when: Check_Magick.failed
   become: yes
 
+##mini_magickの設定
 - name: mini_magick
   template:
     src: templates/application.rb.j2

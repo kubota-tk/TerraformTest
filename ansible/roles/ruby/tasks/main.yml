@@ -1,62 +1,62 @@
 ---
-# Tasks File for Ruby
-- name: Check Ruby Installed
-  command: ruby --version
-  register: ruby_check
-  ignore_errors: true
+##rubyインストール
+
+##rubyがインストール済みか確認
+- name: Check ruby installed
+  ansible.builtin.command:
+    cmd: ruby -v
+  register: Check_ruby
+  ignore_errors: yes
   changed_when: false
 
-#- name: Install rbenv
-#  git: 
-#    repo: "{{rbenv_git}}"
-#    dest: "{{rbenv_dest}}"
-  when: ruby_check.failed
-
-- name: Git Ruby-build
-  git:
+- name: Git ruby-build
+  ansible.builtin.git:
     repo: "{{build_git}}"
     dest: "{{rbenv_dest}}/plugins/ruby-build"
-  when: ruby_check.failed
+  when: Check_ruby.failed    ##rubyをインストールしていたらスキップ
 
-- name: Import GPG keys for rvm
+##rvmインストールの為の鍵を公式から入手
+- name: Import GPG
   ansible.builtin.command: 
     cmd: gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
-  when: ruby_check.failed
+  when: Check_ruby.failed
   changed_when: false
 
 - name: Install rvm
   ansible.builtin.shell: 
     cmd: curl -sSL https://get.rvm.io | bash -s stable
-  when: ruby_check.failed
+  when: Check_ruby.failed
   changed_when: false
 
+##シェルスクリプト上で使えるようにsource処理
 - name: Source rvm script
   ansible.builtin.lineinfile:
-    path: /home/{{ansible_user}}/.bashrc
-    line: 'if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi'
+    path: /home/ec2-user/.bashrc
+    line: 'if [ -s $HOME/.rvm/scripts/rvm ] ; then source $HOME/.rvm/scripts/rvm ; fi'
     state: present
-  when: ruby_check.failed
+  when: Check_ruby.failed
   changed_when: false
 
-- name: load .bashrc
+- name: Load .bashrc
   ansible.builtin.shell:
     cmd: /bin/bash -lc "source /home/ec2-user/.bashrc"
-  when: ruby_check.failed
+  when: Check_ruby.failed
   changed_when: false
 
-- name: Install ruby
+
+- name: Rvm ruby
   ansible.builtin.shell:
     cmd: /bin/bash -lc "rvm install ruby-{{ruby_version}}"
-  when: ruby_check.failed
-  environment:
+  when: Check_ruby.failed
+  environment:      ##ansible_env.PATHでリモートアカウントによりパス変更
     PATH: "{{ansible_env.PATH}}:{{rvm_dest}}/bin"
   register: ruby_install
   changed_when: false
 
-- name: Set default ruby version
+- name: ruby version PATH
   ansible.builtin.shell:
     cmd: /bin/bash -lc "rvm use {{ruby_version}}"
-  environment:
+  environment:     ##rubyのパスを指定
     PATH: "{{ansible_env.PATH}}:{{rvm_dest}}/bin"
   when: ruby_install.changed
 

@@ -1,3 +1,5 @@
 ---
+##Gitの入手元
+
 repo_url: https://github.com/yuta-ushijima/raisetech-live8-sample-app.git
 app_dir: /home/ec2-user/raisetech-live8-sample-app

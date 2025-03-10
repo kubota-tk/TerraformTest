@@ -1,40 +1,41 @@
 ---
+##Setup
 
-# Tasks File For Setup
+##データベース（RDS）の接続設定
 - name: Create database.yml
-  template:
+  ansible.builtin.template:
     src: templates/database.yml.j2
     dest: "{{app_dir}}/config/database.yml"
   changed_when: false
 
+##amazonから接続のパーミッション許可
 - name: Create development.rb
-  template:
+  ansible.builtin.template:
     src: templates/development.rb
     dest: "{{app_dir}}/config/environments/development.rb"
   changed_when: false
 
+##画像の保存場所をS3に設定
 - name: Create storage.yml
-  template:
+  ansible.builtin.template:
     src: templates/storage.yml.j2
     dest: "{{app_dir}}/config/storage.yml"
   changed_when: false
 
+##yarnパッケージ追加でpackage.jsonに書かれた依存関係更新
 - name: yarn add
-  shell: bash -lc yarn add yarn@1.22.19
+  ansible.builtin.shell:
+    cmd: bash -lc yarn add yarn@1.22.19
   args:
     chdir: "{{app_dir}}"
   changed_when: false
 
+##実行ファイル
 - name: bin/setup
-  shell: bash -lc "bin/setup"
+  ansible.builtin.shell:
+    cmd: bash -lc "bin/setup"
   register: setup_result
   args:
     chdir: "{{app_dir}}"
   changed_when: false
 
-#- name: bin/dev
-#  shell: bash -lc "bin/dev"
-#  register: dev_result
-#  args:
-#    chdir: "{{app_dir}}"
-#  changed_when: false
