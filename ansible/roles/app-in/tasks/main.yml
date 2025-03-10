@@ -10,7 +10,7 @@
   git: 
     repo: "{{repo_url}}"
     dest: "{{app_dir}}"  
-#    force: yes
+    force: yes
   ignore_errors: true
   when: not Check_App.stat.exists
 

@@ -1,8 +1,8 @@
 ---
 - name: Install git
-  become: yes
   yum:
     name: git
     state: present
+    become: yes
     lock_timeout: 180
 

@@ -1,9 +1,9 @@
 # Update yum
 - name: update yum
-  become: yes
   yum:
     name: '*'
     state: latest
+  become: yes
 
 # Install yum
 - name: yum install package
@@ -24,5 +24,12 @@
       - libxml2-devel
       - libxslt-devel
       - sqlite-devel
+ ######### 
+      - autoconf
+      - automake
+      - bison
+      - libtool
+      - patch
+      - glibc-devel
     state: present
-
+    become: yes
