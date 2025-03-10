@@ -20,9 +20,9 @@
 
 - name: Set rbenv environment
   shell: |
-    echo 'export PATH="${HOME}/.rbenv/shims:${HOME}/.rbenv/bin:${PATH}"' >> ~/.bash_profile
-    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-    source ~/.bash_profile
+    echo 'export PATH="${HOME}/.rbenv/shims:${HOME}/.rbenv/bin:${PATH}"' >> ${HOME}/.bashrc
+    echo 'eval "$(rbenv init -)"' >> ${HOME}/.bashrc
+    source ${HOME}/.bashrc
   when: ruby_check.failed
 
 
