@@ -13,12 +13,6 @@
   changed_when: false
   become: yes
 
-- name: Reload puma.service
-  shell:
-    cmd: "systemctl daemon-reload"
-  changed_when: false
-  become: yes
-
 - name: creat socket tmp/sockets
   ansible.builtin.file:
     path: "{{app_dir}}/tmp/sockets"
@@ -32,6 +26,12 @@
     state: directory
     owner: "{{ansible_user}}"
     mode: 0755
+
+- name: Reload puma.service
+  shell:
+    cmd: "systemctl daemon-reload"
+  changed_when: false
+  become: yes
 
 - name: Edit nginx.conf
   template:

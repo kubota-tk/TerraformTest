@@ -7,6 +7,12 @@
     dest: "{{app_dir}}/config/database.yml"
   changed_when: false
 
+- name: Create development.rb
+  template:
+    src: templates/development.rb
+    dest: "{{app_dir}}/environments/development.rb"
+  changed_when: false
+
 - name: yarn add
   shell: bash -lc yarn add yarn@1.22.19
   args:
