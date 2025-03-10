@@ -3,7 +3,7 @@
 
 ##Imagemagickの有無をチェック
 - name: Check Imagemagick
-  shell: magick -v
+  shell: magick -version
   register: Check_Magick
   ignore_errors: yes
   changed_when: false
