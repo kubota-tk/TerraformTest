@@ -1,7 +1,6 @@
 ---
 ##MySQLの設定
 
-
 - name: Uninstall mysql-server
   become: yes
   ansible.builtin.yum:
@@ -31,10 +30,10 @@
 
 - name: Start MySQL
   become: yes
-  ansible.builtin.systemd_service:
+  ansible.builtin.service:
     name: mysqld
     state: started
   ignore_errors: yes
 
 
-##MySQLのパスワードは手動で入手とする（sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'）
+##MySQLのパワードは手動で入手とする（sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'）
