@@ -11,3 +11,10 @@
   register: rails_install
   when: rails_check.failed
 
+#- name: Install Rails
+#  gem:
+#    name: rails
+#    state: present
+#    executable: "{{rbenv_dest}}/shims/gem"
+#    user_install: false
+#    version: "{{rails_version}}"

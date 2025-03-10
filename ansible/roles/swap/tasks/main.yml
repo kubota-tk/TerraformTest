@@ -1,18 +1,29 @@
 ---
 - set_fact:
     swap_file_path: /swapfile
+
 - command: dd if=/dev/zero of={{ swap_file_path }} bs={{ ansible_memtotal_mb }} count=2M
   args:
     creates: '{{ swap_file_path }}'
+  become: yes
+
 - file:
     path: '{{ swap_file_path }}'
     mode: '0600'
+  become: yes
+
 - command: file {{ swap_file_path }}
   register: swap_file_test
+  become: yes
+
 - command: mkswap {{ swap_file_path }}
   when: ansible_swaptotal_mb == 0
+  become: yes
+
 - command: swapon {{ swap_file_path }}
   when: ansible_swaptotal_mb == 0
+  become: yes
+
 - mount:
     name: swap
     src: '{{ swap_file_path }}'
@@ -21,4 +32,5 @@
     passno: '0'
     dump: '0'
     state: present
+  become: yes
 

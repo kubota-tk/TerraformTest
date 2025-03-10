@@ -1,22 +1,15 @@
 ---
 # Tasks File for Ruby
 - name: Check Ruby Installed
-  shell: bash -lc "ruby -v"
+  command: ruby --version
   register: ruby_check
   ignore_errors: true
   changed_when: false
 
-- name: Install rbenv
-  git: 
-    repo: "{{rbenv_git}}"
-    dest: "{{rbenv_dest}}"
-  when: ruby_check.failed
-
-- name: Bash Write
-  shell: |
-    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
-    source ~/.bash_profile
+#- name: Install rbenv
+#  git: 
+#    repo: "{{rbenv_git}}"
+#    dest: "{{rbenv_dest}}"
   when: ruby_check.failed
 
 - name: Git Ruby-build
@@ -25,24 +18,109 @@
     dest: "{{rbenv_dest}}/plugins/ruby-build"
   when: ruby_check.failed
 
-- name: Install Ruby-build
-  shell: ./install.sh
-  args:
-    chdir: "{{rbenv_dest}}/plugins/ruby-build"
+- name: Import GPG keys for rvm
+  ansible.builtin.command: 
+    cmd: gpg2 --keyserver keyserver.ubuntu.com --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
   when: ruby_check.failed
+  changed_when: false
 
-- name: Install Ruby
-  shell: bash -lc "rbenv install {{ruby_version}} -v"
+- name: Install rvm
+  ansible.builtin.shell: 
+    cmd: curl -sSL https://get.rvm.io | bash -s stable
   when: ruby_check.failed
-  ignore_errors: true
+  changed_when: false
 
-- name: Global Ruby
-  shell: bash -lc "rbenv global {{ruby_version}}"
+- name: Source rvm script
+  ansible.builtin.lineinfile:
+    path: /home/{{ansible_user}}/.bashrc
+    line: 'if [[ -s $HOME/.rvm/scripts/rvm ]] ; then source $HOME/.rvm/scripts/rvm ; fi'
+    state: present
   when: ruby_check.failed
-  ignore_errors: true
+  changed_when: false
 
-- name: Global Ruby Version
-  debug:
-    var: ruby_check
-  ignore_errors: true
+- name: load .bashrc
+  ansible.builtin.shell:
+    cmd: /bin/bash -lc "source /home/ec2-user/.bashrc"
   when: ruby_check.failed
+  changed_when: false
+
+- name: Install ruby
+  ansible.builtin.shell:
+    cmd: /bin/bash -lc "rvm install ruby-{{ruby_version}}"
+  when: ruby_check.failed
+  environment:
+    PATH: "{{ansible_env.PATH}}:{{rvm_dest}}/bin"
+  register: ruby_install
+  changed_when: false
+
+- name: Set default ruby version
+  ansible.builtin.shell:
+    cmd: /bin/bash -lc "rvm use {{ruby_version}}"
+  environment:
+    PATH: "{{ansible_env.PATH}}:{{rvm_dest}}/bin"
+  when: ruby_install.changed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#- name: Set rbenv environment
+#  shell: |
+#    echo 'export PATH="${HOME}/.rbenv/shims:${HOME}/.rbenv/bin:${PATH}"' >> ${HOME}/.bashrc
+#    echo 'eval "$(rbenv init -)"' >> ${HOME}/.bashrc
+#    source ${HOME}/.bashrc
+#  when: ruby_check.failed
+
+
+#- name: Makedir
+#  shell: mkdir /usr/local/share/ruby-build
+#- name: Install Ruby-build
+#  shell: ./install.sh
+#  args:
+#    chdir: "{{rbenv_dest}}/plugins/ruby-build"
+#  when: ruby_check.failed
+  
+#- name: Install Ruby
+#  shell: bash -lc "rbenv install {{ruby_version}} -v"
+#  when: ruby_check.failed
+#  ignore_errors: true
+
+#- name: Install ruby
+#  shell: bash -lc |
+#    echo "Installing ruby {{ruby_version}}"
+#    "{{rbenv_dest}}/bin/rbenv install {{ruby_version}}"
+#    "{{rbenv_dest}}/bin/rbenv global {{ruby_version}}"
+#    "{{rbenv_dest}}/bin/rbenv rehash" 
+#  when: ruby_check.failed
+#  ignore_errors: true
+
+#- name: Global Ruby
+#  shell: bash -lc "{{rbenv_dest}}/bin/rbenv global {{ruby_version}}"
+#  when: ruby_check.failed
+#  ignore_errors: true
+
+#- name: Rehash Ruby
+#  shell: "{{rbenv_dest}}/bin/rbenv rehash"
+#  when: ruby_check.failed
+#  ignore_errors: true
+
+#- name: Global Ruby Version
+#  debug:
+#    var: ruby_check
+#  ignore_errors: true
+#  when: ruby_check.failed

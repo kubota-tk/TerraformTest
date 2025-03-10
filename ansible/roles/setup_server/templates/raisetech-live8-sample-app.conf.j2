@@ -1,0 +1,20 @@
+  error_log  {{app_dir}}/log/error.log;
+  access_log  {{app_die}}/log/access.log;
+
+  server {
+    listen 80;
+    listen [::]:80;
+    server_name localhost;
+
+    location / {
+      root {{app_dir}}/public;
+      index index.html index.htm;
+    }
+
+   
+    error_page 500 502 503 504 /50x.html;
+
+    location = /50x.html {
+      root {{app_dir}}/public;
+    }
+  }

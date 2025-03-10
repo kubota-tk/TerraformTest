@@ -1,3 +1,4 @@
 ---
 #Bundler Version
 bundler_version: 2.3.14
+rbenv_dest: ~/.rbenv
