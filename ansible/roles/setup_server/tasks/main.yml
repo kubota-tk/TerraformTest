@@ -11,11 +11,13 @@
     src: templates/puma.service
     dest: "/etc/systemd/system/puma.service"
   changed_when: false
+  become: yes
 
 - name: Reload puma.service
   shell:
     cmd: "systemctl daemon-reload"
   changed_when: false
+  become: yes
 
 #- name: creat socket tmp/sockets
 #  ansible.builtin.file:
@@ -36,11 +38,13 @@
     src: templates/nginx.conf.j2
     dest: "/etc/nginx/nginx.conf"
   changed_when: false
+  become: yes
   
 - name: Stop mysql.service
   shell:
     cmd: "systemctl stop mysqld"
   changed_when: false
+  become: yes
 
 - name: assets precompile
   shell: /bin/bash -lc "bin/rails assets:precompile"
