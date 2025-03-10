@@ -13,5 +13,5 @@
   ansible.builtin.shell:
     cmd: bash -lc "gem install rails -v {{rails_version}}"
   register: rails_install
-  when: rails_check.failed
+  when: Check_rails.failed
 
