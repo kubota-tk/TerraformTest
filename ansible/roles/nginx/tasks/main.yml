@@ -11,6 +11,7 @@
     name: nginx
     state: present
     lock_timeout: 180
+  become: yes
 
 - name: Ensure Nginx is started and enabled on boot
   systemd:

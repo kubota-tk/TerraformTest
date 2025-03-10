@@ -1,7 +1,7 @@
 ---
 # Tasks File for Ruby
 - name: Check Ruby Installed
-  command: ruby -version
+  command: ruby --version
   register: ruby_check
   ignore_errors: true
   changed_when: false
