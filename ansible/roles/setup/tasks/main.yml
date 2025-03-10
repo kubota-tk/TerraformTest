@@ -10,7 +10,7 @@
 - name: Create development.rb
   template:
     src: templates/development.rb
-    dest: "{{app_dir}}/environments/development.rb"
+    dest: "{{app_dir}}/config/environments/development.rb"
   changed_when: false
 
 - name: yarn add
