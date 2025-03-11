@@ -38,11 +38,11 @@ template
 Railsアプリケーションのインストールに必要な設定を実行。
 - roles（ruby）はrbenvからrvmを使ったインストールに切り替え
 - roles（ruby,setup,setup_server）でpuma,nginx,socket接続等で大きく追加
-　→ development.rb（setupのtemplates）でAWSからアプリへの接続許可等
-  → database.yml（setupのtemplates）でRDSへの接続
-  → storage.yml（setupのtemplates）で画像保存をS3に設定
-  → puma.rb他（setup_serverのtemplates）でpumaのソケット設定等
-　→ nginx.conf（setup_serverのtemplates）でnginxの設定
+　→ development.rb（setupのtemplates）でAWSからアプリへの接続許可等  
+  → database.yml（setupのtemplates）でRDSへの接続  
+  → storage.yml（setupのtemplates）で画像保存をS3に設定  
+  → puma.rb他（setup_serverのtemplates）でpumaのソケット設定等  
+　→ nginx.conf（setup_serverのtemplates）でnginxの設定  
 - その他rolesは微修正
 ![3.1_ansible](images1/3.1_ansible.png)  
 ![3.2_ansible](images1/3.2_ansible.png) 
@@ -58,7 +58,7 @@ Template(Ansibleの設定ファイル、全て前回から変更あり)
  - [**main.yml(mysql)**](/template2/ansible/roles/mysql/tasks/main.yml)
  - [**main.yml(ruby)**](/template2/ansible/roles/ruby/tasks/main.yml)
  - [**main.yml(rails)**](/template2/ansible/roles/rails/tasks/main.yml)
- - [**main.yml(bundler)**](/template2/ansible/roles/bundler/main.yml)
+ - [**main.yml(bundler)**](/template2/ansible/roles/bundler/tasks/main.yml)
  - [**main.yml(node)**](/template2/ansible/roles/node/tasks/main.yml)
  - [**main.yml(yarn)**](/template2/ansible/roles/yarn/tasks/main.yml)
  - [**main.yml(imagemagick)**](/template2/ansible/roles/imagemagick/tasks/main.yml)
