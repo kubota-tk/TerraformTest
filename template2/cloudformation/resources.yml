@@ -1,0 +1,311 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: EC2,RDS,ALB and S3 for TerraformTest 
+
+## Metadataの作成 ##
+
+Metadata:  
+  AWS::CloudFormation::Interface:
+    ParameterGroups:
+      - Label:
+          default: Environment Setting
+        Parameters:
+          - ProjectName
+      - Label:
+          default: Amazon EC2 Config
+        Parameters:
+          - KeyName
+      - Label:
+          default: RDS Config
+        Parameters:
+          - DBEngineName
+          - MySQLMajorVersion
+          - MySQLMinorVersion
+          - DBInstanceClass
+          - DBInstanceStorageSize
+          - DBInstanceStorageType
+          - DBName
+          - DBMasterUserName
+          - DBPassword
+
+##　Parametersの作成　##
+
+Parameters:
+  ProjectName:
+    Type: String
+    Description: project name
+    Default: TerraformTest
+##---EC2---##
+  KeyName:
+    Description: The EC2 Key Pair to allow SSH access to the instance
+    Type: AWS::EC2::KeyPair::KeyName
+    Default: TerraformTest-keypair
+##---RDS---##
+  DBEngineName:
+    Description: Input DB Engine Name
+    Type: String
+    Default: mysql
+  MySQLMajorVersion:
+    Description: Input DB Major Version
+    Type: String
+    Default: 8.0
+  MySQLMinorVersion:
+    Description: Input DB Minor Version
+    Type: String
+    Default: 36    
+  DBInstanceClass:
+    Type: String
+    Default: "db.t3.micro"
+  DBInstanceStorageSize: 
+    Type: String
+    Default: "20"
+  DBInstanceStorageType:
+    Type: String
+    Default: "gp2"
+  DBName:
+    Description: DB Name
+    Type: String
+    Default: TerraformTestdb
+  DBMasterUserName:
+    Description: RDS Maseter User Name
+    Type: String
+    Default: admin
+  DBPassword:
+    Description: RDS Password
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    Default: XXXXXXXX
+   
+Resources:
+
+## EC2 Instanceの作成 ##
+
+ EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-031ff5a575101728a
+      KeyName: !Ref KeyName
+      InstanceType: t2.micro
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: "true"
+          DeviceIndex: "0"
+          SubnetId: !ImportValue Pub-SubA-ID
+          GroupSet:
+            - !ImportValue EC2-SG-ID
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 8
+            VolumeType: gp2
+            DeleteOnTermination: true
+      IamInstanceProfile: !Ref S3AccessInstanceProfile
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-ec2
+## ユーザーデータ ##
+      UserData: !Base64 |
+        #!/bin/bash
+        yum install git -y
+
+## ElasticIPの作成##
+ ElasticIP:
+   Type: AWS::EC2::EIP
+   Properties:
+     Domain: vpc
+
+## ElasticIPをEC2に割り当て##
+ IPAssos:
+   Type: AWS::EC2::EIPAssociation
+   Properties:
+     EIP: !Ref ElasticIP 
+     InstanceId: !Ref EC2Instance
+
+
+## RDS Instanceの作成 ##
+
+ DBInstance:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      DBInstanceIdentifier: !Sub ${ProjectName}-rds
+      Engine: !Ref DBEngineName
+      EngineVersion: !Sub ${MySQLMajorVersion}.${MySQLMinorVersion}
+      DBInstanceClass: !Ref DBInstanceClass
+      AvailabilityZone: !Select
+      - 0
+      - Fn::GetAZs: !Ref AWS::Region
+      AllocatedStorage: !Ref DBInstanceStorageSize
+      StorageType: !Ref DBInstanceStorageType
+      DBName: !Ref DBName
+      MasterUsername: !Ref DBMasterUserName
+      MasterUserPassword: !Ref DBPassword
+      DBSubnetGroupName: !Ref DBSubnetGroup
+      PubliclyAccessible: false
+      MultiAZ: false
+      AutoMinorVersionUpgrade: false
+      DBParameterGroupName: !Ref DBParameterGroup
+      VPCSecurityGroups:
+        - !ImportValue RDS-SG-ID
+      BackupRetentionPeriod: 7
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-rds
+
+## DB ParameterGroupを作成 ##
+
+ DBParameterGroup:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      DBParameterGroupName: !Sub ${ProjectName}-db-parametergp
+      Description: MySQL Parameter Group
+      Family: !Sub MySQL${MySQLMajorVersion}
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-db-parametergp
+
+## DB SubnetGroupの作成 ##
+
+ DBSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupName: !Sub ${ProjectName}-db-subnetgp
+      DBSubnetGroupDescription: DBSubnetGroup
+      SubnetIds:
+        - !ImportValue Pri-SubA-ID
+        - !ImportValue Pri-SubC-ID
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-db-subnetgp
+
+
+## ALBの作成 ##
+
+ ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub ${ProjectName}-alb
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+      SecurityGroups:
+        - !ImportValue ALB-SG-ID
+      Subnets:
+        - !ImportValue Pub-SubA-ID
+        - !ImportValue Pub-SubC-ID
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-alb
+
+## TargetGroup ALB ##
+
+ TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub ${ProjectName}-alb-tg
+      VpcId: !ImportValue VPCID
+      IpAddressType: ipv4
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Port: 80
+      TargetType: instance
+      Targets:
+      - Id: !Ref EC2Instance
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckPort: traffic-port
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      UnhealthyThresholdCount: 2
+      Matcher:
+        HttpCode: 200
+      Tags:
+      - Key: Name
+        Value: !Sub ${ProjectName}-alb-tg
+
+## Listener(ALB) ##
+
+ Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+      - Type: forward
+        TargetGroupArn: !Ref TargetGroup
+
+## S3 ##
+
+ S3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: terraformtest-s3-bucket
+      PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+
+## IAM Policy ##
+
+ S3AccessPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Sub ${ProjectName}-s3acsecc-policy
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Action: 
+              - s3:GetObject
+              - s3:PutObject
+              - s3:ListBucket
+              - s3:DeleteObject
+            Resource:
+              - !Sub arn:aws:s3:::${S3Bucket}
+              - !Sub arn:aws:s3:::${S3Bucket}/*
+
+## IAM Role ##
+
+ S3AccessRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub ${ProjectName}-ec2-role
+      Path: /
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          Effect: "Allow"
+          Principal:
+            Service:
+              - "ec2.amazonaws.com"
+          Action:
+            - "sts:AssumeRole"
+      ManagedPolicyArns:
+        - !Ref S3AccessPolicy
+
+## IAM InstanceProflie ##
+ S3AccessInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: !Sub ${ProjectName}-instanceprofile
+      Path: "/"
+      Roles:
+      - !Ref S3AccessRole
+
+## Outputs ##
+Outputs:
+ ALBDNSName:
+    Description: DNS-Name of ALB
+    Value:  !GetAtt ALB.DNSName
+
+ RDSEndpoint:
+    Description: Endpoint of RDS-Instance
+    Value:  !GetAtt DBInstance.Endpoint.Address
+

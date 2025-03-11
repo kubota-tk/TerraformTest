@@ -1,0 +1,25 @@
+---
+- hosts: all
+  
+##circleciに設定した環境変数
+  vars:   
+    aws_db_pw: "{{ (lookup('env','AWS_DB_PW')) }}"
+    rds_endpoint: "{{ (lookup('env','RDS_ENDPOINT')) }}"   
+    aws_default_region: "{{ (lookup('env','AWS_DEFAULT_REGION')) }}"	   
+    aws_s3_bucket_name: "{{ (lookup('env','AWS_S3_BUCKET_NAME')) }}"
+
+  roles:
+    - swap
+    - git
+    - app-in   ##アプリケーション
+    - yum
+    - mysql
+    - ruby
+    - rails
+    - bundler
+    - node
+    - yarn
+    - imagemagick
+    - nginx
+    - setup
+    - setup_server

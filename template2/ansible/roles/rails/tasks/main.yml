@@ -1,0 +1,17 @@
+---
+##Rails Install
+
+##railsn有無をチェック
+- name: Check Rails
+  ansible.builtin.command:
+    cmd: rails -v
+  register: Check_rails
+  ignore_errors: yes
+  changed_when: false
+
+- name: Gem Rails
+  ansible.builtin.shell:
+    cmd: bash -lc "gem install rails -v {{rails_version}}"
+  register: rails_install
+  when: Check_rails.failed
+
