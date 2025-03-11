@@ -1,6 +1,5 @@
 ---
-#rbenv_git: https://github.com/rbenv/rbenv.git
-#rbenv_dest: ~/.rbenv
+##rubyのインストール元（https://rvm.io/rvm/security）
 
 rvm_dest: /home/ec2-user/.rvm
 

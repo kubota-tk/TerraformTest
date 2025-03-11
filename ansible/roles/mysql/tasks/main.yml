@@ -1,46 +1,39 @@
 ---
+##MySQLの設定
+
 - name: Uninstall mysql-server
   become: yes
-  yum:
+  ansible.builtin.yum:
     name: mysql-server
-    state: absent
+    state: absent    ##削除の意味
 
 - name: Uninstall mariaDB
   become: yes
-  yum:
+  ansible.builtin.yum:
     name: mariadb*
     state: absent
 
-- name: Add the MySQL from YumRepository
+- name: Yum MySQL
   become: yes
-  yum:
-    name: https://repo.mysql.com/mysql84-community-release-el7-1.noarch.rpm
-    state: present
+  ansible.builtin.yum:
+    name: "{{mysql_url}}"
+    state: present      ##同じものがあればそのまま
 
-- name: Install mysql-community-devel,server,client
+- name: Yum mysql-community-devel,server,client
   become: yes
-  yum:
+  ansible.builtin.yum:
     name:
       - mysql-community-devel
       - mysql-community-server
       - mysql-community-client
     state: present
 
-- name: Start MySQL service
+- name: Start MySQL
   become: yes
-  systemd:
+  ansible.builtin.service:
     name: mysqld
     state: started
-  ignore_errors: true
+  ignore_errors: yes
 
-##
-##varsに変数設定したが、パスワードがshellに載ることになり、エラー
-##
-## - name: get temporary password
-##  shell: sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'
-##  register: mysql_default_password
-##
-## - name: change root user password
-##  become: yes
-##  shell: |
-##     mysql -u root -p'{{ mysql_default_password.stdout }}' --connect-expired-password -e "set password for root@'localhost'=password('{{ mysql_password }}');"
+
+##MySQLのパワードは手動で入手とする（sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'）

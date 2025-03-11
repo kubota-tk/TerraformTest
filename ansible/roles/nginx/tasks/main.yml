@@ -1,16 +1,18 @@
 ---
-# Nginxのインストール
+## Nginx install
 
+## Amazonのリポジトリからインストール
 - name: Enable Amazon-linux-extras
-  command: amazon-linux-extras install epel -y
+  ansible.builtin.command:
+    cmd: amazon-linux-extras install epel -y
   args:
     creates: /etc/yum.repos.d/epel.repo
 
-- name: Install Nginx
+- name: Yum nginx
   yum:
     name: nginx
     state: present
-    lock_timeout: 180
+    lock_timeout: 180   ##デフォルト30秒のため180秒に設定
   become: yes
 
 

@@ -1,20 +1,17 @@
 ---
-# Task File For Rails Install
-- name: Check Rails Installed
-  command: rails -v
-  register: rails_check
-  ignore_errors: true
+##Rails Install
+
+##railsn有無をチェック
+- name: Check Rails
+  ansible.builtin.command:
+    cmd: rails -v
+  register: Check_rails
+  ignore_errors: yes
   changed_when: false
 
-- name: Install Rails
-  shell: bash -lc "gem install rails -v {{rails_version}}"
+- name: Gem Rails
+  ansible.builtin.shell:
+    cmd: bash -lc "gem install rails -v {{rails_version}}"
   register: rails_install
-  when: rails_check.failed
+  when: Check_rails.failed
 
-#- name: Install Rails
-#  gem:
-#    name: rails
-#    state: present
-#    executable: "{{rbenv_dest}}/shims/gem"
-#    user_install: false
-#    version: "{{rails_version}}"

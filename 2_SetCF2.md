@@ -38,12 +38,11 @@ template
 Railsアプリケーションのインストールに必要な設定を実行。
 - roles（ruby）はrbenvからrvmを使ったインストールに切り替え
 - roles（ruby,setup,setup_server）でpuma,nginx,socket接続等で大きく追加
-　→ development.rb（setup_serverのtemplates）でALBとの接続と、画像保存先の変更
-  → database.yml（setup_serverのtemplates）でRDSへの接続
+　→ development.rb（setupのtemplates）でAWSからアプリへの接続許可等
+  → database.yml（setupのtemplates）でRDSへの接続
+  → storage.yml（setupのtemplates）で画像保存をS3に設定
   → puma.rb他（setup_serverのtemplates）でpumaのソケット設定等
 　→ nginx.conf（setup_serverのtemplates）でnginxの設定
-  → storage.yml（setupのtemplates）で画像保存をS3に設定
-　→ development.rb（setup_serverのtemplates）でAWSからの接続パーミッション許可設定
 - その他rolesは微修正
 ![3.1_ansible](images1/3.1_ansible1.png)  
 ![3.2_ansible](images1/3.2_ansible2.png) 
