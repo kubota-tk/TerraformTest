@@ -1,25 +1,21 @@
 ---
-#Task File For Bundler
+##Gem bundler
 
-- name: Check Bundler Installed
-  command: bundler _{{bundler_version}}_ --version
-  register: bundler_check
-  ignore_errors: true
+##bundlerインストールのチェック
+- name: Check bundler
+  ansible.builtin.command:
+    cmd: '~/.rvm/gems/ruby-3.2.3/bin/bundler -v'
+  register: Check_bundler
+  ignore_errors: yes
   changed_when: false
 
-- name: Install Bundler Viersion
-  shell: export "BUNDLER_VERSION={{bundler_version}}"
-  when: bundler_check.failed
+- name: Install viersion(bundler)
+  ansible.builtin.shell:
+    cmd: export "BUNDLER_VERSION={{bundler_version}}"
+  when: Check_bundler.failed
 
-- name: Install Bundler
-  shell: bash -lc "gem install bundler -v {{bundler_version}}" 
-  when: bundler_check.failed
+- name: Gem bundler
+  ansible.builtin.shell:
+    cmd: bash -lc "gem install bundler -v {{bundler_version}}" 
+  when: Check_bundler.failed
 
-#- name: Install Bundler
-#  gem:
-#    name: bundler
-#    state: present
-#    executable: "{{rbenv_dest}}/shims/gem"
-#    user_install: false
-#    version: "{{bundler_version}}"
-#  when: bundler_check.failed

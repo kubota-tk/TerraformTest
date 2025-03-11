@@ -1,21 +1,26 @@
 ---
 # Tasks File For Node
-- name: Check Installed Node
-  command: node -v
-  register: node_check
-  ignore_errors: true
+
+##nodeの有無チェック
+- name: Check installed node
+  ansible.builtin.command:
+    cmd: node -v
+  register: Check_node
+  ignore_errors: yes
   changed_when: false
 
 - name: Install nvm
-  shell: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash"
-  when: node_check.failed
+  ansible.builtin.shell:
+    cmd: "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash"
+  when: Check_node.failed
   changed_when: false
 
-- name: Load Bash
-  shell: source ~/.bashrc
-  when: node_check.failed
+- name: Load bash
+  ansible.builtin.shell:
+    cmd: source ~/.bashrc
+  when: Check_node.failed
 
 - name: Install Node
   shell: bash -lc "nvm install {{node_version}}"
-  when: node_check.failed
+  when: Check_node.failed
 

@@ -44,8 +44,8 @@ Railsアプリケーションのインストールに必要な設定を実行。
   → puma.rb他（setup_serverのtemplates）でpumaのソケット設定等
 　→ nginx.conf（setup_serverのtemplates）でnginxの設定
 - その他rolesは微修正
-![3.1_ansible](images1/3.1_ansible1.png)  
-![3.2_ansible](images1/3.2_ansible2.png) 
+![3.1_ansible](images1/3.1_ansible.png)  
+![3.2_ansible](images1/3.2_ansible.png) 
 
 
 Template(Ansibleの設定ファイル、全て前回から変更あり)
@@ -114,4 +114,5 @@ template（前回と変更なし）
 
 ## 6. 考察
 puma、nginx、RDS(MySQL)の3層構造に、RailsのWebアプリケーションをデプロイし、さらにS3での画像保管と、ALBでの分散をCloudFormationで反映させた。  
-今後、Terraformの活用、CloudWatchのアラーム導入、Fargate導入と構築していく予定。
+その後、CloudWatchとSNSのTopicを使ってアラーム通知を自動設定に追加した。
+今後、Terraformの活用、Fargate導入を課題とする。

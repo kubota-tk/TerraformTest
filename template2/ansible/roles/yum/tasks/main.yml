@@ -1,11 +1,13 @@
-# Update yum
+---
+##Install Yum
+
 - name: update yum
   yum:
     name: '*'
     state: latest
   become: yes
 
-# Install yum
+## パッケージがない場合にインストール
 - name: yum install package
   become: yes
   yum:
@@ -24,11 +26,10 @@
       - libxml2-devel
       - libxslt-devel
       - sqlite-devel
- ######### 
       - autoconf
       - automake
-      - bison
       - libtool
+      - bison
       - patch
       - glibc-devel
     state: present
