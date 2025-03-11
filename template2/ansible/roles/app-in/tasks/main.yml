@@ -1,0 +1,16 @@
+---
+#アプリケーションダウンロード
+
+- name: Check In App
+  stat:
+    path: "{{app_dir}}"
+  register: Check_App
+
+- name: Git App
+  git: 
+    repo: "{{repo_url}}"
+    dest: "{{app_dir}}"  
+    force: yes
+  ignore_errors: true
+  when: not Check_App.stat.exists
+

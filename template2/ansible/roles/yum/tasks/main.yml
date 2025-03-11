@@ -1,0 +1,34 @@
+# Update yum
+- name: update yum
+  yum:
+    name: '*'
+    state: latest
+  become: yes
+
+# Install yum
+- name: yum install package
+  become: yes
+  yum:
+    name:
+      - gcc-c++
+      - glibc-headers
+      - openssl-devel
+      - readline
+      - libyaml-devel
+      - readline-devel
+      - zlib
+      - zlib-devel
+      - libffi-devel
+      - libxml2
+      - libxslt
+      - libxml2-devel
+      - libxslt-devel
+      - sqlite-devel
+ ######### 
+      - autoconf
+      - automake
+      - bison
+      - libtool
+      - patch
+      - glibc-devel
+    state: present

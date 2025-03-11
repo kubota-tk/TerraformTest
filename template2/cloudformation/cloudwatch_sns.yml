@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: CloudWatch and SNS for TerraformTest 
+  
+##　Parametersの作成　##
+Parameters:
+  ProjectName:
+    Type: String
+    Description: project name
+    Default: TerraformTest
+  EnvironmentIdentifier:
+    Description: Environment Identifier
+    MaxLength: 15
+    Type: String
+    Default: email
+  Email:
+    Type: String
+    Default: fvqool@onetm-ml.com
+  AlbLoadBalancer:
+    Description: AlbLoadBalancer Arn
+    Type: String
+    Default: app/TerraformTest-alb/2f9684ed689dedd9
+  AlbTargetGroup:
+    Description: ALB TargetGroup Arn
+    Type: String
+    Default: targetgroup/TerraformTest-alb-tg/1cdbe301c7f89927
+
+Resources:
+## SNS Topic の作成 ##
+  SNSTopic:
+    Type: AWS::SNS::Topic
+    Properties: 
+      TopicName:
+        !Join
+          - '-'
+          - - !Ref EnvironmentIdentifier
+            - topic
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref Email
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-topic
+## CloudWatchアラームの作成 ##
+  AlbErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: !Sub "${ProjectName}-${EnvironmentIdentifier}-AlbTargetError"
+      AlarmDescription: AlbTargetError is more than once
+      # アラームのアクションとしてSNSのTopicを指定
+      AlarmActions: 
+        - !Join
+            - ':'
+            - - 'arn:aws:sns:ap-northeast-1'
+              - !Ref AWS::AccountId
+              - !Join
+                  - '-'
+                  - - !Ref EnvironmentIdentifier
+                    - topic
+      ComparisonOperator: GreaterThanOrEqualToThreshold
+      MetricName: UnHealthyHostCount
+      Namespace: AWS/ApplicationELB
+      DatapointsToAlarm: '1'
+      EvaluationPeriods: '1'
+      Period: '60'
+      Statistic: Sum
+      Threshold: '1'
+      TreatMissingData: 'breaching'
+      Tags:
+        - Key: Name
+          Value: !Sub ${ProjectName}-alarm
+      Dimensions:
+        - Name: TargetGroup
+          Value: !Ref AlbTargetGroup
+        - Name: LoadBalancer
+          Value: !Ref AlbLoadBalancer
+        - Name: AvailabilityZone
+          Value: ap-northeast-1a
+
+
+

@@ -1,0 +1,65 @@
+---
+# Tasks File For Setup_server
+- name: Edit puma.rb
+  template:
+    src: templates/puma.rb.j2
+    dest: "{{app_dir}}/config/puma.rb"
+  changed_when: false
+
+- name: Edit puma.service
+  template:
+    src: templates/puma.service
+    dest: "/etc/systemd/system/puma.service"
+  changed_when: false
+  become: yes
+
+- name: Reload puma.service
+  shell:
+    cmd: "systemctl daemon-reload"
+  changed_when: false
+  become: yes
+
+- name: creat socket tmp/sockets
+  ansible.builtin.file:
+    path: "{{app_dir}}/tmp/sockets"
+    state: directory
+    owner: "{{ansible_user}}"
+    mode: 0755
+
+- name: creat socket tmp/pids
+  ansible.builtin.file:
+    path: "{{app_dir}}/tmp/pids"
+    state: directory
+    owner: "{{ansible_user}}"
+    mode: 0755
+
+- name: Edit nginx.conf
+  template:
+    src: templates/nginx.conf.j2
+    dest: "/etc/nginx/nginx.conf"
+  changed_when: false
+  become: yes
+  
+- name: Stop mysql.service
+  shell:
+    cmd: "systemctl stop mysqld"
+  changed_when: false
+  become: yes
+
+- name: assets precompile
+  shell: /bin/bash -lc "bin/rails assets:precompile"
+  args:
+    chdir: "{{app_dir}}"
+  changed_when: false
+
+- name: start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  become: yes
+
+- name: start puma
+  ansible.builtin.service:
+    name: puma
+    state: restarted
+  become: yes

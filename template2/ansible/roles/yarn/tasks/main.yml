@@ -1,0 +1,15 @@
+---
+# Tasks File For Yarn
+- name: Check installed Yarn
+  command: yarn -v
+  register: yarn_check
+  ignore_errors: true
+  changed_when: false
+
+- name: Install Yarn
+  shell: bash -lc "npm install -global yarn@{{yarn_version}}"
+  when: yarn_check.failed
+
+- name: Install Dependencies Packages
+  shell: bash -lc yarn install
+  when: yarn_check.failed
