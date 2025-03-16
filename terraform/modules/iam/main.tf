@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "s3_access_policy" {
-  name = "${var.project_name}-s3access-policy"
+  name   = "${var.project_name}-s3access-policy"
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -23,8 +23,8 @@ EOF
 }
 
 resource "aws_iam_role" "s3_access_role" {
-  name = "${var.project_name}-ec2-role"
-  path = "/"
+  name               = "${var.project_name}-ec2-role"
+  path               = "/"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -53,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "attach" {
 
 
 resource "aws_iam_instance_profile" "s3_access_instance_profile" {
-//  name = "${var.project_name}-instanceprofile"
+  //  name = "${var.project_name}-instanceprofile"
   path = "/"
   name = aws_iam_role.s3_access_role.name
   role = aws_iam_role.s3_access_role.name

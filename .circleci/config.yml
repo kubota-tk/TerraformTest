@@ -13,7 +13,10 @@ jobs:
       - checkout
       - terraform/init:
           path: terraform/env/dev/
-          
+      - terraform/plan:
+          path: terraform/env/dev/           
+      - terraform/apply:
+          path: terraform/env/dev/
 
 
 ##      - aws-cli/setup:

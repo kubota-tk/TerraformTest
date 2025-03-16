@@ -3,4 +3,4 @@
 
 //env = "dev"
 
-project_name= "TerraformTest"
+project_name = "TerraformTest"

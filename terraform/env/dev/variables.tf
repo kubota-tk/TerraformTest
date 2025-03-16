@@ -10,14 +10,14 @@ variable "aws_region" {
 
 variable "project_name" {
   description = "Project Name"
-  type = string
-  default = "var.project_name"
+  type        = string
+  default     = "var.project_name"
 }
 
 variable "environment_identifier" {
   description = "Environment Identifier in SnsTopic"
-  type = string
-  default = "email"
+  type        = string
+  default     = "email"
 }
 
 variable "db_username" {

@@ -1,6 +1,6 @@
-variable project_name {}
+variable "project_name" {}
 
-variable environment_identifier {}
+variable "environment_identifier" {}
 
-variable email {}
+variable "email" {}
 

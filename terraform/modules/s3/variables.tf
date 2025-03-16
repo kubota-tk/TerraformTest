@@ -4,7 +4,7 @@
 variable "project_name" {}
 
 variable "VPCID" {
-description = "Internet Gateway を関連付ける VPC の ID"
-type = string
-default = "var.VPCID"
+  description = "Internet Gateway を関連付ける VPC の ID"
+  type        = string
+  default     = "var.VPCID"
 }
