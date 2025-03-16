@@ -12,7 +12,7 @@
 - name: Git ruby-build
   ansible.builtin.git:
     repo: "{{build_git}}"
-    dest: "{{rbenv_dest}}/plugins/ruby-build"
+    dest: "{{rvm_dest}}/plugins/ruby-build"
   when: Check_ruby.failed    ##rubyをインストールしていたらスキップ
 
 ##rvmインストールの為の鍵を公式から入手
