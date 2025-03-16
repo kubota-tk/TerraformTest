@@ -3,6 +3,11 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
+data "aws_region" "current" {}
+locals {
+  region = data.aws_region.current.name
+}
+
 data "aws_caller_identity" "current" {}
 locals {
   account_id = data.aws_caller_identity.current.account_id
@@ -12,7 +17,7 @@ locals {
 resource "aws_cloudwatch_metric_alarm" "alb_error_alarm" {
   alarm_name        = "${var.project_name}-${var.environment_identifier}-AlbTargetError"
   alarm_description = "AlbTargetError is more than once"
-  alarm_actions     = ["arn:aws:sns:${var.aws_region}:${local.account_id}:${var.SnsTopicName}"]
+  alarm_actions     = ["arn:aws:sns:${local.region}:${local.account_id}:${var.SnsTopicName}"]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   metric_name         = "UnHealthyHostCount"
