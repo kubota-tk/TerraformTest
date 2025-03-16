@@ -1,4 +1,8 @@
 ##アカウントID出力
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 data "aws_caller_identity" "current" {}
 locals {
   account_id = data.aws_caller_identity.current.account_id
@@ -27,7 +31,9 @@ resource "aws_cloudwatch_metric_alarm" "alb_error_alarm" {
     Name  = "LoadBalancer"
     Value = var.ALB_ARN
     Name  = "AvailabilityZone"
-    Value = "${var.aws_region}"
+    value = element(data.aws_availability_zones.available.names, 0)
+
+##    Value = "${var.aws_region}"
   }
   tags = {
     Name = "${var.project_name}-alarm"

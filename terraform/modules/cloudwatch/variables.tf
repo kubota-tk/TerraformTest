@@ -1,6 +1,5 @@
 variable "project_name" {}
-variable "aws_region" {
-}
+variable "aws_region" {}
 
 
 variable "environment_identifier" {}
