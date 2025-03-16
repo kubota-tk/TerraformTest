@@ -5,7 +5,7 @@ data "aws_availability_zones" "available" {
 
 data "aws_region" "current" {}
 locals {
-  rws_egion = data.aws_region.current.name
+  aws_region = data.aws_region.current.name
 }
 
 data "aws_caller_identity" "current" {}
