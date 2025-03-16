@@ -17,39 +17,39 @@ jobs:
           path: terraform/env/dev/           
       - terraform/apply:
           path: terraform/env/dev/
-    execute-ansible:
-      executor: ansible-playbook/default
-      steps:
-        - checkout
-        - add_ssh_keys:
-            fingerprints:
-                - SHA256:Pzp/qPVIBuc7WoYvlPLV/wCYRyg3lDrh4E/C0NQLnMA
-        - ansible-playbook/install:
-            version: 2.10.7
-        - ansible-playbook/playbook:
-            playbook: ansible/playbook.yml
-            playbook-options: -u ec2-user -i ansible/inventory --private-key ~/.ssh/TerraformTest-keypair
-    execute-serverspec:
-      executor: ruby/default
-      steps:
-       - checkout
-       - ruby/install:
-           version: 3.2.3
-       - ruby/install-deps:
-           app-dir: serverspec
-       - run:
-           name: execute serverspec test
-           command: |
-             cd serverspec
-             TARGET_HOST=52.68.83.216 bundle exec rspec
+  execute-ansible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - SHA256:Pzp/qPVIBuc7WoYvlPLV/wCYRyg3lDrh4E/C0NQLnMA
+      - ansible-playbook/install:
+          version: 2.10.7
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: -u ec2-user -i ansible/inventory --private-key ~/.ssh/TerraformTest-keypair
+  execute-serverspec:
+    executor: ruby/default
+    steps:
+     - checkout
+     - ruby/install:
+         version: 3.2.3
+     - ruby/install-deps:
+         app-dir: serverspec
+     - run:
+         name: execute serverspec test
+         command: |
+           cd serverspec
+           TARGET_HOST=52.68.83.216 bundle exec rspec
   
 workflows:
   TerraformTest-workflow:
     jobs:
       - execute-terraform
-        - execute-ansible:
-            requires:
-              - execute-cloudformation
-        - execute-serverspec: 
-            requires:
-              - execute-ansible
+      - execute-ansible:
+          requires:
+            - execute-terraform
+      - execute-serverspec: 
+          requires:
+            - execute-ansible
