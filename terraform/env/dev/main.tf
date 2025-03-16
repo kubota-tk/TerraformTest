@@ -89,23 +89,23 @@ module "rds" {
   RDS-SG-ID   = module.security_group.RDS-SG-ID
 }
 
-//module "sns" {
-//  source = "../../modules/sns"
-//
-//  project_name           = var.project_name
-//  environment_identifier = var.environment_identifier
-//  email                  = "fvqool@onetm-ml.com"
-//}
+module "sns" {
+  source = "../../modules/sns"
+
+  project_name           = var.project_name
+  environment_identifier = var.environment_identifier
+  email                  = "fvqool@onetm-ml.com"
+}
 
 
-//module "cloudwatch" {
-//  source = "../../modules/cloudwatch"
-//
-//project_name           = var.project_name
-//  aws_region             = var.aws_region
-//  environment_identifier = var.environment_identifier
-//
-//  ALB_TARGET_ARN = module.alb.ALB_TARGET_ARN
-//  ALB_ARN        = module.alb.ALB_ARN
-//  SnsTopicName   = module.sns.SnsTopicName
-//}
+module "cloudwatch" {
+  source = "../../modules/cloudwatch"
+
+  project_name           = var.project_name
+  aws_region             = var.aws_region
+  environment_identifier = var.environment_identifier
+
+  ALB_TARGET_ARN = module.alb.ALB_TARGET_ARN
+  ALB_ARN        = module.alb.ALB_ARN
+  SnsTopicName   = module.sns.SnsTopicName
+}
