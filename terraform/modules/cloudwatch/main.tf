@@ -12,9 +12,7 @@ locals {
 resource "aws_cloudwatch_metric_alarm" "alb_error_alarm" {
   alarm_name        = "${var.project_name}-${var.environment_identifier}-AlbTargetError"
   alarm_description = "AlbTargetError is more than once"
-  alarm_actions     = ["arn:aws:sns:ap-northeast-1:${local.account_id}:${var.SnsTopicName}"]
-  //  alarm_actions = ["arn:aws:sns:${var.aws_region}:891377211926:${var.SnsTopicName}"]
-  //  alarm_actions = ["arn:aws:sns:ap-northeast-1:891377211926:${var.SnsTopicName}"]
+  alarm_actions     = ["arn:aws:sns:${var.aws_region}:${local.account_id}:${var.SnsTopicName}"]
 
   comparison_operator = "GreaterThanOrEqualToThreshold"
   metric_name         = "UnHealthyHostCount"
@@ -32,7 +30,7 @@ resource "aws_cloudwatch_metric_alarm" "alb_error_alarm" {
     Value = var.ALB_ARN
     Name  = "AvailabilityZone"
     value = element(data.aws_availability_zones.available.names, 0)
-
+##${var.aws_region}"
 ##    Value = "${var.aws_region}"
   }
   tags = {
