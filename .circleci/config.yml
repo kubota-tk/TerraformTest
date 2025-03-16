@@ -33,15 +33,15 @@ jobs:
       executor: ruby/default
       steps:
        - checkout
-        - ruby/install:
-            version: 3.2.3
-        - ruby/install-deps:
-            app-dir: serverspec
-        - run:
-            name: execute serverspec test
-            command: |
-              cd serverspec
-              TARGET_HOST=54.248.178.66 bundle exec rspec
+       - ruby/install:
+           version: 3.2.3
+       - ruby/install-deps:
+           app-dir: serverspec
+       - run:
+           name: execute serverspec test
+           command: |
+             cd serverspec
+             TARGET_HOST=52.68.83.216 bundle exec rspec
   
 workflows:
   TerraformTest-workflow:
