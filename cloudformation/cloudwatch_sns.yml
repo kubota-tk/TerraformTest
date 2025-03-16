@@ -41,6 +41,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-topic
+    DeletionPolicy: Retain # ←追加
+
 ## CloudWatchアラームの作成 ##
   AlbErrorAlarm:
     Type: AWS::CloudWatch::Alarm
@@ -76,6 +78,6 @@ Resources:
           Value: !Ref AlbLoadBalancer
         - Name: AvailabilityZone
           Value: ap-northeast-1a
-
+    DeletionPolicy: Retain # ←追加
 
 

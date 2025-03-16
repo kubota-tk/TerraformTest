@@ -82,45 +82,46 @@ Resources:
 ## EC2 Instanceの作成 ##
 
  EC2Instance:
-    Type: AWS::EC2::Instance
-    Properties:
-      ImageId: ami-031ff5a575101728a
-      KeyName: !Ref KeyName
-      InstanceType: t2.micro
-      NetworkInterfaces:
-        - AssociatePublicIpAddress: "true"
-          DeviceIndex: "0"
-          SubnetId: !ImportValue Pub-SubA-ID
-          GroupSet:
-            - !ImportValue EC2-SG-ID
-      BlockDeviceMappings:
-        - DeviceName: /dev/xvda
-          Ebs:
-            VolumeSize: 8
-            VolumeType: gp2
-            DeleteOnTermination: true
-      IamInstanceProfile: !Ref S3AccessInstanceProfile
-      Tags:
-        - Key: Name
-          Value: !Sub ${ProjectName}-ec2
+   Type: AWS::EC2::Instance
+   Properties:
+     ImageId: ami-031ff5a575101728a
+     KeyName: !Ref KeyName
+     InstanceType: t2.micro
+     NetworkInterfaces:
+       - AssociatePublicIpAddress: "true"
+         DeviceIndex: "0"
+         SubnetId: !ImportValue Pub-SubA-ID
+         GroupSet:
+           - !ImportValue EC2-SG-ID
+     BlockDeviceMappings:
+       - DeviceName: /dev/xvda
+         Ebs:
+           VolumeSize: 8
+           VolumeType: gp2
+           DeleteOnTermination: true
+     IamInstanceProfile: !Ref S3AccessInstanceProfile
+     Tags:
+       - Key: Name
+         Value: !Sub ${ProjectName}-ec2
 ## ユーザーデータ ##
-      UserData: !Base64 |
-        #!/bin/bash
-        yum install git -y
+     UserData: !Base64 |
+       #!/bin/bash
+       yum install git -y
+   DeletionPolicy: Retain # ←追加 
 
 ## ElasticIPの作成##
  ElasticIP:
    Type: AWS::EC2::EIP
    Properties:
      Domain: vpc
-
+   DeletionPolicy: Retain # ←追加
 ## ElasticIPをEC2に割り当て##
  IPAssos:
    Type: AWS::EC2::EIPAssociation
    Properties:
      EIP: !Ref ElasticIP 
      InstanceId: !Ref EC2Instance
-
+   DeletionPolicy: Retain # ←追加
 
 ## RDS Instanceの作成 ##
 
@@ -150,7 +151,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-rds
-
+    DeletionPolicy: Retain # ←追加
 ## DB ParameterGroupを作成 ##
 
  DBParameterGroup:
@@ -162,7 +163,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-db-parametergp
-
+    DeletionPolicy: Retain # ←追加
 ## DB SubnetGroupの作成 ##
 
  DBSubnetGroup:
@@ -176,7 +177,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-db-subnetgp
-
+    DeletionPolicy: Retain # ←追加
 
 ## ALBの作成 ##
 
@@ -195,7 +196,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-alb
-
+    DeletionPolicy: Retain # ←追加
 ## TargetGroup ALB ##
 
  TargetGroup:
@@ -223,7 +224,7 @@ Resources:
       Tags:
       - Key: Name
         Value: !Sub ${ProjectName}-alb-tg
-
+    DeletionPolicy: Retain # ←追加
 ## Listener(ALB) ##
 
  Listener:
@@ -235,7 +236,7 @@ Resources:
       DefaultActions:
       - Type: forward
         TargetGroupArn: !Ref TargetGroup
-
+    DeletionPolicy: Retain # ←追加
 ## S3 ##
 
  S3Bucket:
@@ -254,7 +255,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-s3-bucket
-
+    DeletionPolicy: Retain # ←追加
 ## IAM Policy ##
 
  S3AccessPolicy:
@@ -273,7 +274,7 @@ Resources:
             Resource:
               - !Sub arn:aws:s3:::${S3Bucket}
               - !Sub arn:aws:s3:::${S3Bucket}/*
-
+    DeletionPolicy: Retain # ←追加
 ## IAM Role ##
 
  S3AccessRole:
@@ -292,7 +293,7 @@ Resources:
             - "sts:AssumeRole"
       ManagedPolicyArns:
         - !Ref S3AccessPolicy
-
+    DeletionPolicy: Retain # ←追加
 ## IAM InstanceProflie ##
  S3AccessInstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -301,7 +302,7 @@ Resources:
       Path: "/"
       Roles:
       - !Ref S3AccessRole
-
+    DeletionPolicy: Retain # ←追加
 ## Outputs ##
 Outputs:
  ALBDNSName:

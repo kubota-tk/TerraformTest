@@ -1,21 +1,8 @@
 serverspec/vendor
-
-##ansible/roles/swap/vars/**
-##ansible/roles/yum/vars/**
-##ansible/roles/git/vars/**
-##ansible/roles/mysql/vars/**
-##ansible/roles/ruby/vars/**
-##ansible/roles/rails/vars/**
-##ansible/roles/app-in/vars/**
-##ansible/roles/bundler/vars/**
-##ansible/roles/node/vars/**
-##ansible/roles/yarn/vars/**
-##ansible/roles/nginx/vars/**
-##ansible/roles/setup/vars/**
-##ansible/roles/setup_server/vars/**
-
-##ansible/roles/setup/templates/**
-##ansible/roles/setup_server/templates/**
-
+terraform/.terraform/*
+terraform/.terraform.lock.hcl
+terraform/env/dev/.terraform/*
+terraform/env/dev/.terraform.lock.hcl
+terraform/env/dev/.tflint.hcl
 
 
