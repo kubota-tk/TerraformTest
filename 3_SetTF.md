@@ -9,7 +9,7 @@ Terraformを活用し、AWSのクラウドインフラ環境を自動構築し�
 - CircleCI、Ansible、Serverspecと連携した自動構築環境を作成
 （アプリのデプロイも含む）
   
-![構成図](images2/構成図2.jpg)
+![構成図](images3/構成図3.jpg)
   
 ![0.1_terraform_apply](images3/0.1_terraform_apply.png)   
 ![0.2_circleci](images3/0.2_circleci.png) 
