@@ -75,5 +75,5 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   # Connection permission（OK）
-  config.hosts << "terraformtest-alb-814084533.ap-northeast-1.elb.amazonaws.com"
+  config.hosts << "terraformtest-alb-541157513.ap-northeast-1.elb.amazonaws.com"
 end
