@@ -1,3 +1,4 @@
+######## S3アクセスポリシー ########
 resource "aws_iam_policy" "s3_access_policy" {
   name   = "${var.project_name}-s3access-policy"
   policy = <<EOF
@@ -22,6 +23,7 @@ resource "aws_iam_policy" "s3_access_policy" {
 EOF
 }
 
+######## S3アクセス iamロール ########
 resource "aws_iam_role" "s3_access_role" {
   name               = "${var.project_name}-ec2-role"
   path               = "/"
@@ -45,13 +47,13 @@ resource "aws_iam_role" "s3_access_role" {
 EOF
 }
 
+######## ロールとポリシーのアタッチメント ########
 resource "aws_iam_role_policy_attachment" "attach" {
   role       = aws_iam_role.s3_access_role.name
   policy_arn = aws_iam_policy.s3_access_policy.arn
 }
 
-
-
+######## インスタンスプロフィール ########
 resource "aws_iam_instance_profile" "s3_access_instance_profile" {
   //  name = "${var.project_name}-instanceprofile"
   path = "/"

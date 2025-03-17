@@ -1,4 +1,4 @@
-##他のモジュールに出力したいもの
+##他のモジュールに出力
 
 output "EC2ID" {
   description = "EC2 ID"

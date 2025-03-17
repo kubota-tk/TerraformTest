@@ -21,7 +21,11 @@ resource "aws_db_instance" "db_instance" {
   auto_minor_version_upgrade = false
   parameter_group_name       = aws_db_parameter_group.db_parameter_group.id
   vpc_security_group_ids     = [var.RDS-SG-ID]
+  
+//  apply_immediately = true
+//  deletion_protection = false
   backup_retention_period    = 7
+  skip_final_snapshot    = true
   tags = {
     Name = "${var.project_name}-rds"
   }

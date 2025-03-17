@@ -1,3 +1,4 @@
+######## s3バケット #########
 resource "aws_s3_bucket" "s3_bucket" {
   bucket = "terraformtest-s3-bucket"
   tags = {
@@ -5,7 +6,7 @@ resource "aws_s3_bucket" "s3_bucket" {
   }
 }
 
-
+######## publick access ########
 resource "aws_s3_bucket_public_access_block" "s3_bucket" {
   bucket                  = aws_s3_bucket.s3_bucket.bucket
   block_public_acls       = true
@@ -14,7 +15,7 @@ resource "aws_s3_bucket_public_access_block" "s3_bucket" {
   restrict_public_buckets = true
 }
 
-
+######## 暗号化 ########
 resource "aws_s3_bucket_server_side_encryption_configuration" "s3-encryption" {
   bucket = aws_s3_bucket.s3_bucket.id
   rule {
@@ -25,13 +26,13 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "s3-encryption" {
 }
 
 
-//参考、バージョニング設定
-//resource "aws_s3_bucket_versioning" "s3_versioning" {
-//  bucket = aws_s3_bucket.s3_bucket.id
-//  versioning_configuration {
-//    status = "Disabled"
-//  }
-//}
+##<<参考>> バージョニング設定
+##resource "aws_s3_bucket_versioning" "s3_versioning" {
+##  bucket = aws_s3_bucket.s3_bucket.id
+##  versioning_configuration {
+##    status = "Disabled"
+##  }
+##}
 
 
 

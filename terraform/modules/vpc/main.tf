@@ -1,11 +1,10 @@
-////////データソースの宣言////////
+########データソースの宣言########
 
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
-///////// vpc /////////
-
+######## vpc ########
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpccidr
   enable_dns_support   = true
@@ -15,8 +14,7 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-//////// internet gateway ////////
-
+######## internet gateway ########
 resource "aws_internet_gateway" "internet_gateway" {
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -24,12 +22,7 @@ resource "aws_internet_gateway" "internet_gateway" {
   }
 }
 
-//resource "aws_vpn_gateway_attachment" "internet_gateway_attachment" {
-//  vpc_id = aws_vpc.vpc.id
-//}
-
-//////// subnet ////////
-
+######## subnet ########
 resource "aws_subnet" "public_subnet_a" {
   availability_zone       = element(data.aws_availability_zones.available.names, 0)
   cidr_block              = var.public_subnet_acidr
@@ -68,8 +61,7 @@ resource "aws_subnet" "private_subnet_c" {
   }
 }
 
-//////// route table ////////
-
+######## route table ########
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.vpc.id
   tags = {
@@ -91,17 +83,14 @@ resource "aws_route_table" "private_route_table2" {
   }
 }
 
-//////// public route ////////
-
+######## public route ########
 resource "aws_route" "public_route" {
   route_table_id         = aws_route_table.public_route_table.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.internet_gateway.id
 }
 
-
-//////// routetable with subnet ////////
-
+######## routetable with subnet ########
 resource "aws_route_table_association" "public_subnet_route_a_table_association" {
   subnet_id      = aws_subnet.public_subnet_a.id
   route_table_id = aws_route_table.public_route_table.id

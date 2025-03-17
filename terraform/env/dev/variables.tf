@@ -1,67 +1,56 @@
-##本サービス全体で使う変数（変数名と型で定義）
-##実際の値はterraform.tfvarsに記載
-##variable,local両方併用
+##ルートモジュールでの変数定義
+##terraform.tfvarsで値を設定
 
-
-variable "aws_region" {
-  description = "AWS region"
-  type        = string
-}
+######## サービス全体 ########
 
 variable "project_name" {
   description = "Project Name"
   type        = string
-  default     = "var.project_name"
 }
-
-variable "environment_identifier" {
-  description = "Environment Identifier in SnsTopic"
-  type        = string
-  default     = "email"
-}
-
 variable "db_username" {
   description = "DB Username"
   type        = string
 }
-
 variable "db_password" {
   description = "DB Password"
+}
+variable "aws_region" {
+  description = "Aws Region"
   type        = string
 }
+variable "environment_identifier" {
+  description = "environment_identifier for sns_topic"
+  type        = string
+  default     = "email"
+}
 
-//  variable "VPCID" {}
-//  description = "Internet Gateway を関連付ける VPC の ID"
-//  type = string
-//  default = aws_vpc.vpc.id
-//}
+######## vpcモジュール ########
+variable "vpccidr" {}
+variable "public_subnet_acidr" {}
+variable "public_subnet_ccidr" {}
+variable "private_subnet_acidr" {}
+variable "private_subnet_ccidr" {}
 
-//variable "EC2-SG-ID" {
-//  description = "Value in Cloudformation ID"
-//  type = string
-//  default = "var.EC2-SG-ID"
-//}
+######## security_group モジュール########
 
-//variable "ALB-SG-ID" {
-//  description = "Value in Cloudformation ID"
-//  type = string
-//  default = "var.ALB-SG-ID"
-//}
+######## iam モジュール ########
 
-//variable "Pub-SubA-ID" {
-//  description = "Value in Cloudformation ID"
-//  type = string
-//  default = "var.Pub-SubA-ID"
-//}
+######## ec2モジュール########
+variable "Instance_Type" {}
+variable "Volume_Size" {}
+variable "Volume_Type" {}
+variable "Key_Name" {}
+variable "AMI" {}
 
-//variable "Pub-SubC-ID" {
-//  description = "Value in Cloudformation ID"
-//  type = string
-//  default = "var.Pub-SubC-ID"
-//}
+######## s3モジュール ########
 
-//variable "EC2ID" {
-//  description = "Value in EC2 ID"
-//  type = string
-//  default = "var.EC2ID"
-//}
+######## albモジュール ########
+
+######## rdsモジュール ########
+
+######## snsモジュール ########
+variable "email" {}
+
+######## cloudwatchモジュール ########
+
+

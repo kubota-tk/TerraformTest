@@ -1,5 +1,4 @@
-
-##他のモジュールに出力したいもの
+##他のモジュールに出力
 
 output "S3ID" {
   description = "S3 Bucket ID"

@@ -1,19 +1,21 @@
-##アカウントID出力
+######## availability_zone出力 ########
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
+######## region出力 ########
 data "aws_region" "current" {}
 locals {
   aws_region = data.aws_region.current.name
 }
 
+######## アカウントID出力 ########
 data "aws_caller_identity" "current" {}
 locals {
   account_id = data.aws_caller_identity.current.account_id
 }
 
-
+######## アラーム メトリック########
 resource "aws_cloudwatch_metric_alarm" "alb_error_alarm" {
   alarm_name        = "${var.project_name}-${var.environment_identifier}-AlbTargetError"
   alarm_description = "AlbTargetError is more than once"

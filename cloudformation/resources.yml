@@ -80,7 +80,6 @@ Parameters:
 Resources:
 
 ## EC2 Instanceの作成 ##
-
  EC2Instance:
    Type: AWS::EC2::Instance
    Properties:
@@ -107,24 +106,21 @@ Resources:
      UserData: !Base64 |
        #!/bin/bash
        yum install git -y
-   DeletionPolicy: Retain # ←追加 
 
 ## ElasticIPの作成##
  ElasticIP:
    Type: AWS::EC2::EIP
    Properties:
      Domain: vpc
-   DeletionPolicy: Retain # ←追加
+
 ## ElasticIPをEC2に割り当て##
  IPAssos:
    Type: AWS::EC2::EIPAssociation
    Properties:
      EIP: !Ref ElasticIP 
      InstanceId: !Ref EC2Instance
-   DeletionPolicy: Retain # ←追加
 
 ## RDS Instanceの作成 ##
-
  DBInstance:
     Type: AWS::RDS::DBInstance
     Properties:
@@ -151,9 +147,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-rds
-    DeletionPolicy: Retain # ←追加
-## DB ParameterGroupを作成 ##
 
+## DB ParameterGroupを作成 ##
  DBParameterGroup:
     Type: AWS::RDS::DBParameterGroup
     Properties:
@@ -163,9 +158,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-db-parametergp
-    DeletionPolicy: Retain # ←追加
-## DB SubnetGroupの作成 ##
 
+## DB SubnetGroupの作成 ##
  DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
@@ -177,10 +171,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-db-subnetgp
-    DeletionPolicy: Retain # ←追加
 
 ## ALBの作成 ##
-
  ALB:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
     Properties:
@@ -196,9 +188,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-alb
-    DeletionPolicy: Retain # ←追加
-## TargetGroup ALB ##
 
+## TargetGroup ALB ##
  TargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
@@ -224,9 +215,8 @@ Resources:
       Tags:
       - Key: Name
         Value: !Sub ${ProjectName}-alb-tg
-    DeletionPolicy: Retain # ←追加
-## Listener(ALB) ##
 
+## Listener(ALB) ##
  Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
     Properties:
@@ -236,9 +226,8 @@ Resources:
       DefaultActions:
       - Type: forward
         TargetGroupArn: !Ref TargetGroup
-    DeletionPolicy: Retain # ←追加
-## S3 ##
 
+## S3 ##
  S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
@@ -255,9 +244,8 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-s3-bucket
-    DeletionPolicy: Retain # ←追加
-## IAM Policy ##
 
+## IAM Policy ##
  S3AccessPolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
@@ -274,9 +262,8 @@ Resources:
             Resource:
               - !Sub arn:aws:s3:::${S3Bucket}
               - !Sub arn:aws:s3:::${S3Bucket}/*
-    DeletionPolicy: Retain # ←追加
-## IAM Role ##
 
+## IAM Role ##
  S3AccessRole:
     Type: AWS::IAM::Role
     Properties:
@@ -293,7 +280,7 @@ Resources:
             - "sts:AssumeRole"
       ManagedPolicyArns:
         - !Ref S3AccessPolicy
-    DeletionPolicy: Retain # ←追加
+
 ## IAM InstanceProflie ##
  S3AccessInstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -302,7 +289,7 @@ Resources:
       Path: "/"
       Roles:
       - !Ref S3AccessRole
-    DeletionPolicy: Retain # ←追加
+
 ## Outputs ##
 Outputs:
  ALBDNSName:

@@ -1,5 +1,4 @@
-
-##他のモジュールに出力したいもの
+##他モジュールに出力
 
 output "VPCID" {
   value = aws_vpc.vpc.id

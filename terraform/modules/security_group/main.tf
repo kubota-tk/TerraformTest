@@ -1,8 +1,9 @@
-//////// EC2のセキュリティグループ ////////
+######## EC2のセキュリティグループ ########
 resource "aws_security_group" "ec2_security_group" {
   name        = "${var.project_name}-ec2-sg"
   description = "Allow connections from SSH and ALB"
   vpc_id      = var.VPCID
+
   ingress = [
     {
       description      = "SSH"
@@ -20,12 +21,10 @@ resource "aws_security_group" "ec2_security_group" {
       protocol         = "tcp"
       from_port        = 80
       to_port          = 80
-      cidr_blocks      = ["0.0.0.0/0"]
+      cidr_blocks      = []
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       security_groups  = [aws_security_group.alb_security_group.id]
-      //      security_groups  = []
-      //      vpc_security_group_ids = [aws_security_group.alb_security_group.id]
       self = false
     }
   ]
@@ -47,8 +46,7 @@ resource "aws_security_group" "ec2_security_group" {
   }
 }
 
-////////RDSのセキュリティグループ////////
-
+########RDSのセキュリティグループ########
 resource "aws_security_group" "rds_security_group" {
   name        = "${var.project_name}-rds-sg"
   description = "Allow connection from EC2"
@@ -64,8 +62,7 @@ resource "aws_security_group" "rds_security_group" {
   }
 }
 
-////////ALBのセキュリティグループ////////
-
+########ALBのセキュリティグループ########
 resource "aws_security_group" "alb_security_group" {
   name        = "${var.project_name}-alb-sg"
   description = "Allow connection from Port80"
@@ -100,7 +97,5 @@ resource "aws_security_group" "alb_security_group" {
     Name = "${var.project_name}-alb-sg"
   }
 }
-
-
 
 

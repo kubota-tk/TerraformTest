@@ -1,10 +1,6 @@
-##変数は、モジュール側であっても定義
-##全体に必要な変数はenvにも定義
+##子モジュール側での変数定義
 
+##親モジュールのあるenvで設定
 variable "project_name" {}
 
-//variable "VPCID" {
-//  description = "Internet Gateway を関連付ける VPC の ID"
-//  type        = string
-//}
 

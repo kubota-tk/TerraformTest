@@ -1,3 +1,4 @@
+######## provider ########
 terraform {
   required_providers {
     aws = {
@@ -7,6 +8,5 @@ terraform {
   }
 }
 
-
-//環境変数から取得
+####### 環境変数から取得########
 provider "aws" {}
