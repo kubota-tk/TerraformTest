@@ -26,6 +26,7 @@ module "iam" {
   source = "../../modules/iam"
 
   project_name = var.project_name
+  S3ID = module.s3.S3ID
 }
 
 module "ec2" {
