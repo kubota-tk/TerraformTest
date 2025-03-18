@@ -85,13 +85,13 @@ template（前回と変更なし）
 ![5.3_app_s3_create](images3/5.3_app_s3_create.png)
 
 - S3の画像を表示した状況  
-![5.4_app_s3_delite](images3/5.4_app_s3_pic_check.png)
+![5.4_app_s3_detail](images3/5.4_app_s3_detail.png)
 
 - アプリで画像を削除した状況
-![5.5_app_pic_delite](images3/5.5_app_pic_delete.png)
+![5.5_app_pic_delete](images3/5.5_app_pic_delete.png)
  
 - S3の画像も削除が反映された状況
-![5.6_app_s3_delite](images3/5.6_app_s3_delete.png)
+![5.6_app_s3_delete](images3/5.6_app_s3_delete.png)
 
 2. アラームの通知がEmail宛に送られることを確認した。  
 - VPCからネットワークの様子を確認
