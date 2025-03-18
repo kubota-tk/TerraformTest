@@ -1,5 +1,5 @@
 # 第3工程で行ったこと（3_SetTF.md）
-Terraformを活用し、AWSのクラウドインフラ環境を自動構築した。puma、nginx、RDS(MySQL)の3層構造に、RailsのWebアプリケーションをデプロイし、同アプリに投稿した画像のS3保管、ALBでの分散、CloudFormationのアラーム通知までを自動構築させた。
+Terraformを活用し、AWSのクラウドインフラ環境を自動構築した。puma、nginx、RDS(MySQL)の3層構造に、RailsのWebアプリケーションをデプロイし、同アプリに投稿した画像のS3保管、ALBでの分散、CloudWatchのアラーム通知までを自動構築させた。
 
 ## 概要
 第2工程（2_SetCF.md）で、本工程で行いたいことをCloudFormationで実現した。今回はCloudFormationを使わず、Terraformのモジュールを活用して、同クラウドインフラ環境を自動構築した。
