@@ -31,12 +31,9 @@ resource "aws_cloudwatch_metric_alarm" "alb_error_alarm" {
   threshold           = "1"
   treat_missing_data  = "breaching"
   dimensions = {
-    Name  = "TargetGroup"
-    Value = var.ALB_TARGET_ARN
-    Name  = "LoadBalancer"
-    Value = var.ALB_ARN
-    Name  = "AvailabilityZone"
-    value = element(data.aws_availability_zones.available.names, 0)
+    TargetGroup = var.ALB_TARGET_ARN_SUFFIX
+    LoadBalancer = var.ALB_ARN_SUFFIX
+    AvailabilityZone = element(data.aws_availability_zones.available.names, 0)
   }
   tags = {
     Name = "${var.project_name}-alarm"

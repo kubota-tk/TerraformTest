@@ -1,18 +1,12 @@
 
-##他のモジュールに出力したいもの
+##他のモジュールに出力
 
-//output "AlbDnsName" {
-//  description = "DNS-Name of ALB"
-//  value = aws_lb.alb.domain_name
-//}
-
-
-output "ALB_ARN" {
+output "ALB_ARN_SUFFIX" {
   description = "Alb Arn"
-  value       = aws_lb.alb.arn
+  value       = aws_lb.alb.arn_suffix
 }
 
-output "ALB_TARGET_ARN" {
+output "ALB_TARGET_ARN_SUFFIX" {
   description = "Alb Target Arn"
-  value       = aws_lb_target_group.alb_target.arn
+  value       = aws_lb_target_group.alb_target.arn_suffix
 }
