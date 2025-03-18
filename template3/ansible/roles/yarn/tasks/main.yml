@@ -1,0 +1,22 @@
+---
+##Npm yarn
+
+##yarnを有無をチェック
+- name: Check yarn
+  ansible.builtin.command:
+    cmd: yarn -v
+  register: Check_yarn
+  ignore_errors: yes
+  changed_when: false
+
+##バージョン指定でyarnパッケージのインストール
+- name: Npm Yarn
+  ansible.builtin.shell:
+    cmd: bash -lc "npm install -global yarn@{{yarn_version}}"
+  when: Check_yarn.failed
+
+##package.jsonに書かれたパッケージをインストール
+- name: Install Dependencies Packages
+  ansible.builtin.shell:
+    cmd: bash -lc yarn install
+  when: Check_yarn.failed

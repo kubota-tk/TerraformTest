@@ -11,9 +11,6 @@ Terraformを活用し、AWSのクラウドインフラ環境を自動構築し�
   
 ![構成図](images3/構成図3.jpg)
   
-![0.1_terraform_apply](images3/0.1_terraform_apply.png)   
-![0.2_circleci](images3/0.2_circleci.png) 
-  
 
 ## 1. Terraformの各モジュール作成
 - ルートモジュールをenv/devに作成。開発環境と本番環境でルートモジュールを分けることができ、ルートモジュールから、子モジュールを呼び出せるよう、下図のディレクトリ構成とした。
@@ -21,21 +18,19 @@ Terraformを活用し、AWSのクラウドインフラ環境を自動構築し�
 ![1.1_terraform](images3/1.1_terraform.png)  
 
 template
-- [**vpc.yml（前回から変更なし）**](/template2/cloudformation/vpc.yml)  
-- [**security.yml（前回から変更なし）**](/template2/cloudformation/security.yml) 
-- [**resources.yml（前回から変更あり）**](/template2/cloudformation/resources.yml)  
-- [**cloudwatch_sns.yml（前回から追加）**](/template2/cloudformation/cloudwatch_sns.yml)
-- [**vpc.yml（前回から変更なし）**](/template2/cloudformation/vpc.yml)
-- [**security.yml（前回から変更なし）**](/template2/cloudformation/security.yml)
-- [**resources.yml（前回から変更あり）**](/template2/cloudformation/resources.yml)
-- [**cloudwatch_sns.yml（前回から追加）**](/template2/cloudformation/cloudwatch_sns.yml)
-- [**vpc.yml（前回から変更なし）**](/template2/cloudformation/vpc.yml)
-- [**security.yml（前回から変更なし）**](/template2/cloudformation/security.yml)
-- [**resources.yml（前回から変更あり）**](/template2/cloudformation/resources.yml)
-- [**cloudwatch_sns.yml（前回から追加）**](/template2/cloudformation/cloudwatch_sns.yml)
+- [**dev/main.tf**](/template3/terraform/env/dev/main.tf)  
+- [**alb/main.tf**](/template3/terraform/modules/alb/main.tf) 
+- [**clouwatch/main.tf**](/template3/terraform/modules/cloudwatch/main.tf)  
+- [**ec2/main.tf**](/template3/terraform/modules/ec2/main.tf)
+- [**iam/main.tf**](/template3/terraform/modules/iam/main.tf)
+- [**rds/main.tf**](/template3/terraform/modules/rds/main.tf)
+- [**s3/main.tf**](/template3/terraform/modules/s3/main.tf)
+- [**security_group/main.tf**](/terraform/modules/security_group/main.tf)
+- [**sns/main.tf**](/template3/terraform/modules/sns/main.tf)
+- [**vpc/main.tf**](/template3/terraform/modules/vpc/main.tf)
 
 ## 2. Circleciの環境設定と、実行      
-- Terraformのモジュールで実行できるよう、前回から「」を環境設定に加えた。
+- Terraformのモジュールで環境変数の実行できるよう、前回から「TF_VAR_aws_region」,「TF_VAR_db_password」,「TF_VAR_db_username」を環境設定に加えた。
 - CircleCIのconfig.ymlをTerraformの自動実行ができるように記述し、実行した。
 
 ![2.1_circleci1](images3/2.1_circleci.png)

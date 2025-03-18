@@ -1,0 +1,55 @@
+version: 2.1
+
+orbs:
+  terraform: circleci/terraform@3.6.0
+##  aws-cli: circleci/aws-cli@5.1.0
+  ansible-playbook: orbss/ansible-playbook@0.0.5
+  ruby: circleci/ruby@2.2.1
+
+jobs:
+  execute-terraform:
+    executor: terraform/default
+    steps:
+      - checkout
+      - terraform/init:
+          path: terraform/env/dev/
+      - terraform/plan:
+          path: terraform/env/dev/           
+      - terraform/apply:
+          path: terraform/env/dev/
+  execute-ansible:
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - SHA256:Pzp/qPVIBuc7WoYvlPLV/wCYRyg3lDrh4E/C0NQLnMA
+      - ansible-playbook/install:
+          version: 2.10.7
+      - ansible-playbook/playbook:
+          playbook: ansible/playbook.yml
+          playbook-options: -u ec2-user -i ansible/inventory --private-key ~/.ssh/TerraformTest-keypair
+  execute-serverspec:
+    executor: ruby/default
+    steps:
+     - checkout
+     - ruby/install:
+         version: 3.2.3
+     - ruby/install-deps:
+         app-dir: serverspec
+     - run:
+         name: execute serverspec test
+         command: |
+           cd serverspec
+           TARGET_HOST=13.112.15.63 bundle exec rspec
+  
+workflows:
+  TerraformTest-workflow:
+    jobs:
+      - execute-terraform
+      - execute-ansible:
+          requires:
+            - execute-terraform
+      - execute-serverspec: 
+          requires:
+            - execute-ansible

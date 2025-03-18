@@ -1,0 +1,39 @@
+---
+##MySQLの設定
+
+- name: Uninstall mysql-server
+  become: yes
+  ansible.builtin.yum:
+    name: mysql-server
+    state: absent    ##削除の意味
+
+- name: Uninstall mariaDB
+  become: yes
+  ansible.builtin.yum:
+    name: mariadb*
+    state: absent
+
+- name: Yum MySQL
+  become: yes
+  ansible.builtin.yum:
+    name: "{{mysql_url}}"
+    state: present      ##同じものがあればそのまま
+
+- name: Yum mysql-community-devel,server,client
+  become: yes
+  ansible.builtin.yum:
+    name:
+      - mysql-community-devel
+      - mysql-community-server
+      - mysql-community-client
+    state: present
+
+- name: Start MySQL
+  become: yes
+  ansible.builtin.service:
+    name: mysqld
+    state: started
+  ignore_errors: yes
+
+
+##MySQLのパワードは手動で入手とする（sudo cat /var/log/mysqld.log | grep "temporary password" | awk '{print $13}'）
