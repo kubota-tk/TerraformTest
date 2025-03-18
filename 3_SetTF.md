@@ -66,17 +66,17 @@ Template(Ansibleの設定ファイル）
 
 ## 4. Serverspecのテスト
 git,nginxのインストール確認（前回と変更なし）
-![4.1_serverspec](images3/4.1_serverspec1.png)  
-![4.2_serverspec](images3/4.2_serverspec2.png)
+![4.1_serverspec](images3/4.1_serverspec.png)  
+![4.2_serverspec](images3/4.2_serverspec.png)
 
 template（前回と変更なし）
- - [**Gemfile**](/template2/serverspec/Gemfile)  
- - [**sample_spec.rb**](/template2/serverspec/sample_spec.rb)
+ - [**Gemfile**](/template3/serverspec/Gemfile)  
+ - [**sample_spec.rb**](/template3/serverspec/sample_spec.rb)
 
 ## 5. アプリの実行状況確認
 1. 自動デプロイした Webアプリケーションに、ALBのDNS名を使ってブラウザーから接続。画像を保存してS3に追加、削除されるまでを確認した。  
 - Webアプリケーションのトップページを表示    
-![5.1_app_top_page](images1/5.1_app_top_page.png)  
+![5.1_app_top_page](images3/5.1_app_top_page.png)  
   
 - アプリに画像を追加させて表示
 ![5.2_app_pic_create](images3/5.2_app_pic_create.png)
@@ -93,24 +93,21 @@ template（前回と変更なし）
 - S3の画像も削除が反映された状況
 ![5.6_app_s3_delite](images3/5.6_app_s3_delete.png)
 
-2. アラームの通知がEmail宛に送られることを確認した。
--VPCからネットワークの様子を確認
+2. アラームの通知がEmail宛に送られることを確認した。  
+- VPCからネットワークの様子を確認
 ![5.7_app_alart_check](images3/5.7_app_alart_check.png)
 
 - ALBターゲットグループからネットワークが正常な状況を確認
 ![5.8_app_alart_check](images3/5.8_app_alart_check.png)
 
-- ALBターゲットグループから、ネットワークに異常を発生させた状況を確認
+- 意図的にネットワークに異常を発生させた状況をアラーム詳細画面から確認
 ![5.9_app_alart_check](images3/5.9_app_alart_check.png)
 
-- SNS Topicで設定した通知用メールアドレスに通利が来る様子を確認
+- SNS Topicで設定した通知用メールアドレスに通知が来る様子を確認
 ![5.10_app_alart_check](images3/5.10_app_alart_check.png)
 
-- SNS Topicで設定した通知用メールアドレスに通利が来る様子を確認
-![5.11_app_alart_check](images3/5.11_app_alart_check.png)
 
 
 ## 6. 考察
-puma、nginx、RDS(MySQL)の3層構造に、RailsのWebアプリケーションをデプロイし、さらにS3での画像保管と、ALBでの分散、CloudWatchとSNSのTopicを使ったアラーム通知を、Terraform
-を活用して環境構築した。
-今後、Fargate導入を課題とする。
+他にも、Terraformのaws_cloudformation_stackを使ってCloudFormationのスタックを運用する方法もあるので、どのやり方がプロジェクトに適しているか、経験を積んで判断できるようにしていきたい。
+今後、Fargate導入を検討課題とする。
