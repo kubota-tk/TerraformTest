@@ -33,6 +33,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-ec2-sg
+    DeletionPolicy: Retain # ←追加
 
 ## RDS SecurityGroupを作成 ##
 
@@ -50,6 +51,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-rds-sg
+    DeletionPolicy: Retain # ←追加
 
 ## ELB SecurityGroupを作成 ##
 
@@ -70,6 +72,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-alb-sg
+    DeletionPolicy: Retain # ←追加
           
 ## Outputsを作成 ##
 

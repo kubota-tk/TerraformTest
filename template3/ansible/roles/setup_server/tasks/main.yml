@@ -1,0 +1,75 @@
+---
+##Setup_server
+
+##pumaの設定ファイル
+- name: Edit puma.rb
+  ansible.builtin.template:
+    src: templates/puma.rb.j2
+    dest: "{{app_dir}}/config/puma.rb"
+  changed_when: false
+
+- name: Edit puma.service
+  ansible.builtin.template:
+    src: templates/puma.service
+    dest: "/etc/systemd/system/puma.service"
+  changed_when: false
+  become: yes
+
+##ソケット通信の設定
+- name: creat socket tmp/sockets
+  ansible.builtin.file:
+    path: "{{app_dir}}/tmp/sockets"
+    state: directory
+    owner: "{{ansible_user}}"
+    mode: 0755
+
+- name: creat socket tmp/pids
+  ansible.builtin.file:
+    path: "{{app_dir}}/tmp/pids"
+    state: directory
+    owner: "{{ansible_user}}"
+    mode: 0755
+
+##pumaリロード
+- name: Reload puma.service
+  ansible.builtin.shell:
+    cmd: "systemctl daemon-reload"
+  changed_when: false
+  become: yes
+
+##nginxの設定ファイル
+- name: Edit nginx.conf
+  ansible.builtin.template:
+    src: templates/nginx.conf.j2
+    dest: "/etc/nginx/nginx.conf"
+  changed_when: false
+  become: yes
+  
+##EC2のmysqlを停止
+- name: Stop mysql.service
+  ansible.builtin.shell:
+    cmd: "systemctl stop mysqld"
+  changed_when: false
+  become: yes
+
+##アプリケーションのアセットのコンパイル（高速化） 
+- name: assets precompile
+  ansible.builtin.shell:
+    cmd: /bin/bash -lc "bin/rails assets:precompile"
+  args:
+    chdir: "{{app_dir}}"
+  changed_when: false
+
+##nginx再起動
+- name: start nginx
+  ansible.builtin.service:
+    name: nginx
+    state: restarted
+  become: yes
+
+##puma再起動
+- name: start puma
+  ansible.builtin.service:
+    name: puma
+    state: restarted
+  become: yes

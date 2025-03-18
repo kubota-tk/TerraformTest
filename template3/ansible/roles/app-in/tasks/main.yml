@@ -1,0 +1,20 @@
+---
+##アプリケーション入手
+
+##アプリケーションの有無の判定に使用
+- name: Check In App
+  ansible.builtin.stat:
+    path: "{{app_dir}}"
+  register: Check_App
+
+##Gitの実行、変数は「../vars/main.yml」
+- name: Git App
+  git: 
+    repo: "{{repo_url}}"
+    dest: "{{app_dir}}"  
+  ignore_errors: yes
+  when: not Check_App.stat.exists
+
+
+##fource=yesの追加で、リポジトリに変更がある場合も実行
+

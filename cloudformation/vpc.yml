@@ -57,6 +57,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-vpc
+    DeletionPolicy: Retain # ←追加
 
 ## InternetGatewayの作成 ##
 
@@ -66,12 +67,14 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-igw
+    DeletionPolicy: Retain # ←追加
 
   InternetGatewayAttachment:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       InternetGatewayId: !Ref InternetGateway
       VpcId: !Ref VPC
+    DeletionPolicy: Retain # ←追加
 
 ## Subnetの作成 ##
 
@@ -86,6 +89,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PubSubA
+    DeletionPolicy: Retain # ←追加
 
   PublicSubnetC:
     Type: AWS::EC2::Subnet
@@ -98,6 +102,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PubSubC
+    DeletionPolicy: Retain # ←追加
 
   PrivateSubnetA:
     Type: AWS::EC2::Subnet
@@ -110,6 +115,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PriSubA
+    DeletionPolicy: Retain # ←追加
 
   PrivateSubnetC:
     Type: AWS::EC2::Subnet
@@ -122,7 +128,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PriSubC
-
+    DeletionPolicy: Retain # ←追加
 
 ## RouteTableの作成 ##
 
@@ -133,6 +139,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PublicRouteTable
+    DeletionPolicy: Retain # ←追加
 
   PrivateRouteTable1:
     Type: AWS::EC2::RouteTable
@@ -141,6 +148,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PrivateRouteTable1
+    DeletionPolicy: Retain # ←追加
 
   PrivateRouteTable2:
     Type: AWS::EC2::RouteTable
@@ -149,6 +157,7 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub ${ProjectName}-PrivateRouteTable2
+    DeletionPolicy: Retain # ←追加
 
   PublicRoute:
     Type: AWS::EC2::Route
@@ -156,7 +165,7 @@ Resources:
       RouteTableId: !Ref PublicRouteTable
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref InternetGateway
-
+    DeletionPolicy: Retain # ←追加
 
 ## Associate Routetable with Subnet　##
 
@@ -165,25 +174,28 @@ Resources:
     Properties:
       SubnetId: !Ref PublicSubnetA
       RouteTableId: !Ref PublicRouteTable
+    DeletionPolicy: Retain # ←追加
 
   PublicSubnetRouteCTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PublicSubnetC
       RouteTableId: !Ref PublicRouteTable
+    DeletionPolicy: Retain # ←追加
 
   PrivateSubnetRouteATableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnetA
       RouteTableId: !Ref PrivateRouteTable1
+    DeletionPolicy: Retain # ←追加
 
   PrivateSubnetRouteCTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
       SubnetId: !Ref PrivateSubnetC
       RouteTableId: !Ref PrivateRouteTable2
-
+    DeletionPolicy: Retain # ←追加
 ## Outputsの作成 ##
 Outputs: 
   vpcId: 
