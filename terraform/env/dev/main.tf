@@ -92,7 +92,7 @@ module "cloudwatch" {
   project_name           = var.project_name
   aws_region             = var.aws_region
   environment_identifier = var.environment_identifier
-  ALB_TARGET_ARN = module.alb.ALB_TARGET_ARN
-  ALB_ARN        = module.alb.ALB_ARN
+  ALB_TARGET_ARN_SUFFIX  = module.alb.ALB_TARGET_ARN_SUFFIX
+  ALB_ARN_SUFFIX         = module.alb.ALB_ARN_SUFFIX
   SnsTopicName   = module.sns.SnsTopicName
 }
