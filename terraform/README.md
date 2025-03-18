@@ -5,7 +5,7 @@
 - CloudWatchとSNSで、EC2とALB間の通信異常を検知、アラーム通知が可能
 
 ## AWSクラウドインフラ環境がわかる構成図
-  ![構成図](images3/構成図3.png)
+  ![構成図](../images3/terraform構成.png)
 
 
 ## 開発環境について
@@ -14,7 +14,7 @@
 - AWS接続に必要な環境変数は、別ファイルで設定
 
 ## ディレクトリの作業環境の構成がわかる図
-  ![図](images3/1.1_terraform.png)
+  ![図](images3/../1.1_terraform.png)
 
 
 
